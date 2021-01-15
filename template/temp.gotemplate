@@ -1,0 +1,7 @@
+package demo
+
+{{range .Entitys}} type {{ .EntityName}} struct {
+	{{range .EntityFields}}{{.FieldName}} {{.FieldType}} `gorm:{{.}}`
+	{{end}}
+}
+{{end}}
