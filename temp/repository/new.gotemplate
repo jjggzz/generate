@@ -30,7 +30,7 @@ package {{.PackageName}}
         Insert(*{{.EntityName}}) error
         Update(*{{.EntityName}}) error
         DeleteByPrimaryKey({{.PrimaryKeyType}}) error
-        SelectByPrimaryKey({{.PrimaryKeyType}}) error
+        SelectByPrimaryKey({{.PrimaryKeyType}}) (*{{.EntityName}},error)
     }
     {{end}}
 {{end}}
