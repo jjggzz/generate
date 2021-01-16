@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"github.com/jjggzz/generate/build"
-	template2 "github.com/jjggzz/generate/template"
+	"github.com/jjggzz/generate/temp"
 	"go/format"
 	"io/ioutil"
 	"os"
@@ -18,7 +18,7 @@ func main() {
 	entitys := build.ConversionTableToEntity(tables)
 
 	tmp := template.New("demo")
-	text, err := readFile("D:\\code\\GoCode\\generate\\template\\temp.gotemplate")
+	text, err := readFile("D:\\code\\GoCode\\generate\\temp\\temp.gotemplate")
 	if err != nil {
 		panic(err)
 	}
@@ -31,8 +31,9 @@ func main() {
 		panic(err)
 	}
 	defer file.Close()
+	data := temp.NewData("demo", "xorm", entitys)
 	buffer := bytes.NewBuffer(nil)
-	err = parse.Execute(buffer, template2.Data{Tables:tables,Entitys:entitys})
+	err = parse.Execute(buffer, data)
 	source, err := format.Source(buffer.Bytes())
 	if err != nil {
 		panic(err)
@@ -43,12 +44,10 @@ func main() {
 	}
 }
 
-
-func readFile(path string) (string,error) {
+func readFile(path string) (string, error) {
 	bytes, err := ioutil.ReadFile(path)
 	if err != nil {
-		return "",err
+		return "", err
 	}
-	return string(bytes),nil
+	return string(bytes), nil
 }
-

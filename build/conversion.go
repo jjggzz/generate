@@ -9,21 +9,34 @@ import "strings"
 func ConversionTableToEntity(tables []*Table) []*Entity {
 	entitys := make([]*Entity, 0, len(tables))
 	for _, e := range tables {
-		entity := new(Entity)
-		entity.EntityName = underlineToUpCamel(e.TableName)
-		entity.EntityAnnotation = e.TableComment
-		entityFields := make([]*EntityField, 0, len(e.TableFields))
-		for _, ee := range e.TableFields {
-			entityField := new(EntityField)
-			entityField.FieldName = underlineToUpCamel(ee.ColumnName)
-			entityField.FieldAnnotation = ee.ColumnComment
-			entityField.FieldType = conversionColumnTypeToEntityType(ee.ColumnType)
-			entityFields = append(entityFields, entityField)
-		}
-		entity.EntityFields = entityFields
-		entitys = append(entitys, entity)
+		entitys = append(entitys, conversionTable(e))
 	}
 	return entitys
+}
+
+func conversionTable(table *Table) *Entity {
+	entity := new(Entity)
+	entity.EntityName = underlineToUpCamel(table.TableName)
+	entity.TableName = table.TableName
+	entity.EntityAnnotation = table.TableComment
+	entityFields := make([]*EntityField, 0, len(table.TableFields))
+	for _, ee := range table.TableFields {
+		entityFields = append(entityFields, conversionField(ee))
+	}
+	entity.EntityFields = entityFields
+	return entity
+}
+
+func conversionField(field *TableField) *EntityField {
+	entityField := new(EntityField)
+	entityField.FieldName = underlineToUpCamel(field.ColumnName)
+	entityField.FieldType = conversionColumnTypeToEntityType(field.ColumnType)
+	entityField.ColumnName = field.ColumnName
+	entityField.ColumnType = field.ColumnType
+	entityField.OrmTag = field.ColumnName
+	entityField.JsonTag = strFirstLetterToLowercase(entityField.FieldName)
+	entityField.FieldAnnotation = field.ColumnComment
+	return entityField
 }
 
 // 转换为首字母大写
