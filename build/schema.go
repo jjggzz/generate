@@ -19,14 +19,22 @@ type Table struct {
 
 type TableField struct {
 	ColumnName    string
+	ColumnKey     string
 	ColumnType    string
 	ColumnComment string
 }
 
 var db *sql.DB
 
-func init() {
-	conn, err := sql.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/customer?charset=utf8&parseTime=True&loc=Local")
+func Init(userName string, password string, ip string, port int, schema string) {
+	url := fmt.Sprintf(
+		"%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
+		userName,
+		password,
+		ip,
+		port,
+		schema)
+	conn, err := sql.Open("mysql", url)
 	if err != nil {
 		panic(err)
 	}
@@ -43,7 +51,7 @@ func CloseResource(closer io.Closer) {
 }
 
 const getTableSql = "SELECT TB.TABLE_NAME,TB.TABLE_COMMENT FROM INFORMATION_SCHEMA.TABLES TB Where TB.TABLE_SCHEMA = ?"
-const getFieldSql = "SELECT COL.COLUMN_NAME,COL.COLUMN_TYPE,COL.COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS COL Where COL.TABLE_NAME = ?"
+const getFieldSql = "SELECT COL.COLUMN_NAME,COL.COLUMN_TYPE,COL.COLUMN_KEY,COL.COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS COL Where COL.TABLE_NAME = ?"
 
 // 加载表结构
 // schema: 数据库名
@@ -89,7 +97,7 @@ func getField(table string) ([]*TableField, error) {
 	fields := make([]*TableField, 0, 10)
 	for rows.Next() {
 		field := new(TableField)
-		err := rows.Scan(&field.ColumnName, &field.ColumnType, &field.ColumnComment)
+		err := rows.Scan(&field.ColumnName, &field.ColumnType, &field.ColumnKey, &field.ColumnComment)
 		if err != nil {
 			log.Printf("query field err: %s", err.Error())
 		} else {

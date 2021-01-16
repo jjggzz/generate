@@ -1,0 +1,28 @@
+package {{.PackageName}}
+
+{{if eq .FrameworkName "gorm" }}
+    import (
+        "github.com/jinzhu/gorm"
+    )
+    {{range .Entitys}}
+        type {{StrFirstLetterToLowercase .EntityName}}Repo struct {
+            db *gorm.DB
+        }
+    {{end}}
+
+    {{range .Entitys}}
+        func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Insert(*{{.EntityName}}) error {
+            return nil
+        }
+        func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Update(*{{.EntityName}}) error {
+            return nil
+        }
+        func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) DeleteByPrimaryKey({{.PrimaryKeyType}}) error {
+            return nil
+        }
+        func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) SelectByPrimaryKey({{.PrimaryKeyType}}) error {
+            return nil
+        }
+    {{end}}
+
+{{end}}

@@ -6,6 +6,7 @@ package build
 type Entity struct {
 	EntityName       string
 	TableName        string
+	PrimaryKeyType   string
 	EntityAnnotation string
 	EntityFields     []*EntityField
 }
@@ -15,6 +16,7 @@ type EntityField struct {
 	FieldType       string
 	ColumnName      string
 	ColumnType      string
+	ColumnKey       string
 	OrmTag          string
 	JsonTag         string
 	FieldAnnotation string

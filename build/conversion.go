@@ -16,12 +16,16 @@ func ConversionTableToEntity(tables []*Table) []*Entity {
 
 func conversionTable(table *Table) *Entity {
 	entity := new(Entity)
-	entity.EntityName = underlineToUpCamel(table.TableName)
+	entity.EntityName = UnderlineToUpCamel(table.TableName)
 	entity.TableName = table.TableName
 	entity.EntityAnnotation = table.TableComment
 	entityFields := make([]*EntityField, 0, len(table.TableFields))
 	for _, ee := range table.TableFields {
-		entityFields = append(entityFields, conversionField(ee))
+		field := conversionField(ee)
+		entityFields = append(entityFields, field)
+		if field.ColumnKey == "PRI" {
+			entity.PrimaryKeyType = field.FieldType
+		}
 	}
 	entity.EntityFields = entityFields
 	return entity
@@ -29,12 +33,13 @@ func conversionTable(table *Table) *Entity {
 
 func conversionField(field *TableField) *EntityField {
 	entityField := new(EntityField)
-	entityField.FieldName = underlineToUpCamel(field.ColumnName)
+	entityField.FieldName = UnderlineToUpCamel(field.ColumnName)
 	entityField.FieldType = conversionColumnTypeToEntityType(field.ColumnType)
 	entityField.ColumnName = field.ColumnName
 	entityField.ColumnType = field.ColumnType
+	entityField.ColumnKey = field.ColumnKey
 	entityField.OrmTag = field.ColumnName
-	entityField.JsonTag = strFirstLetterToLowercase(entityField.FieldName)
+	entityField.JsonTag = StrFirstLetterToLowercase(entityField.FieldName)
 	entityField.FieldAnnotation = field.ColumnComment
 	return entityField
 }
@@ -42,7 +47,7 @@ func conversionField(field *TableField) *EntityField {
 // 转换为首字母大写
 // str:		源字符串
 // example:	abc => Abc
-func strFirstLetterToCapital(str string) string {
+func StrFirstLetterToCapital(str string) string {
 	runes := []rune(str)
 	for i, e := range runes {
 		if i == 0 {
@@ -58,7 +63,7 @@ func strFirstLetterToCapital(str string) string {
 // str:		源字符串
 // example:	abc => abc
 // example:	Abc => abc
-func strFirstLetterToLowercase(str string) string {
+func StrFirstLetterToLowercase(str string) string {
 	runes := []rune(str)
 	for i, e := range runes {
 		if i == 0 {
@@ -73,10 +78,10 @@ func strFirstLetterToLowercase(str string) string {
 // 将下划线命名法字符串转换为大驼峰
 // str:		源字符串
 // example:	hello_world => HelloWorld
-func underlineToUpCamel(str string) string {
+func UnderlineToUpCamel(str string) string {
 	split := strings.Split(str, "_")
 	for index, subStr := range split {
-		split[index] = strFirstLetterToCapital(subStr)
+		split[index] = StrFirstLetterToCapital(subStr)
 	}
 	return strings.Join(split, "")
 }

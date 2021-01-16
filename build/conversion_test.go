@@ -7,7 +7,6 @@ import (
 )
 
 func Test_StrToFirstLetterCapital(t *testing.T) {
-
 }
 
 func Test_UnderlineToLowCamel(t *testing.T) {
