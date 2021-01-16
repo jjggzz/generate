@@ -14,6 +14,7 @@ func ConversionTableToEntity(tables []*Table) []*Entity {
 	return entitys
 }
 
+// 表转换为实体
 func conversionTable(table *Table) *Entity {
 	entity := new(Entity)
 	entity.EntityName = UnderlineToUpCamel(table.TableName)
@@ -31,6 +32,7 @@ func conversionTable(table *Table) *Entity {
 	return entity
 }
 
+// 表字段转换为实体字段
 func conversionField(field *TableField) *EntityField {
 	entityField := new(EntityField)
 	entityField.FieldName = UnderlineToUpCamel(field.ColumnName)

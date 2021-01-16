@@ -55,7 +55,7 @@ const getFieldSql = "SELECT COL.COLUMN_NAME,COL.COLUMN_TYPE,COL.COLUMN_KEY,COL.C
 
 // 加载表结构
 // schema: 数据库名
-func Build(schema string) ([]*Table, error) {
+func Load(schema string) ([]*Table, error) {
 	tables, err := getTables(schema)
 	if err != nil {
 		return nil, err

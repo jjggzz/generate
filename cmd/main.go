@@ -34,7 +34,7 @@ func main() {
 	}
 
 	build.Init(*userName, *password, *ip, *port, *schema)
-	tables, err := build.Build(*schema)
+	tables, err := build.Load(*schema)
 	if err != nil {
 		panic(err)
 	}
