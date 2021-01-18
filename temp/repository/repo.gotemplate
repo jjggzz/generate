@@ -3,25 +3,25 @@ package {{.PackageName}}
 
 import (
 	"github.com/jmoiron/sqlx"
-)
-{{range .Entitys}}
-    type {{StrFirstLetterToLowercase .EntityName}}Repo struct {
-        db *sqlx.DB
-    }
-{{end}}
 
-{{range .Entitys}}
-    const {{StrFirstLetterToLowercase .EntityName}}ResultSql = "{{join .ColumnNames ", "}}"
-    func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Insert({{StrFirstLetterToLowercase .EntityName}} *{{.EntityName}}) error {
-        return nil
-    }
-    func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Update({{StrFirstLetterToLowercase .EntityName}} *{{.EntityName}}) error {
-        return nil
-    }
-    func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) DeleteByPrimaryKey(primaryKey {{.PrimaryKeyType}}) error {
-        return nil
-    }
-    func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) SelectByPrimaryKey(primaryKey {{.PrimaryKeyType}}) (*{{.EntityName}},error) {
-        return nil,nil
-    }
-{{end}}
+    {{range .Imports}}"{{.}}"
+    {{end}}
+)
+
+type {{StrFirstLetterToLowercase .EntityName}}Repo struct {
+    db *sqlx.DB
+}
+
+
+func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Insert({{StrFirstLetterToLowercase .EntityName}} *{{.EntityName}}) error {
+    return nil
+}
+func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Update({{StrFirstLetterToLowercase .EntityName}} *{{.EntityName}}) error {
+    return nil
+}
+func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) DeleteByPrimaryKey(primaryKey {{.PrimaryKeyType}}) error {
+    return nil
+}
+func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) SelectByPrimaryKey(primaryKey {{.PrimaryKeyType}}) (*{{.EntityName}},error) {
+    return nil,nil
+}

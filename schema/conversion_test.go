@@ -1,6 +1,6 @@
 // author: JGZ
 // time:   2021-01-15 17:47
-package build
+package schema
 
 import (
 	"testing"

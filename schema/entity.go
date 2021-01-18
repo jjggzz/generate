@@ -1,7 +1,7 @@
 // author: JGZ
 // time:   2021-01-15 18:21
 // 实体结构
-package build
+package schema
 
 type Entity struct {
 	EntityName       string
@@ -19,7 +19,5 @@ type EntityField struct {
 	ColumnName      string
 	ColumnType      string
 	ColumnKey       string
-	OrmTag          string
-	JsonTag         string
 	FieldAnnotation string
 }

@@ -5,7 +5,7 @@ package generate
 import (
 	"bytes"
 	"fmt"
-	"github.com/jjggzz/generate/build"
+	"github.com/jjggzz/generate/schema"
 	"github.com/jjggzz/generate/temp"
 	"go/format"
 	"os"
@@ -14,7 +14,7 @@ import (
 	"text/template"
 )
 
-func Generate(basePath string, data *build.Data) {
+func Generate(basePath string, data *Data) {
 	if !isDir(basePath) {
 		err := os.Mkdir(basePath, os.ModePerm)
 		if err != nil {
@@ -23,25 +23,62 @@ func Generate(basePath string, data *build.Data) {
 	}
 
 	maps := template.FuncMap{
-		"StrFirstLetterToLowercase": build.StrFirstLetterToLowercase,
+		"StrFirstLetterToLowercase": schema.StrFirstLetterToLowercase,
 		"join":                      strings.Join,
 	}
 	names := temp.AssetNames()
 	for _, name := range names {
-		tempText := temp.MustAssetString(name)
-		tmp := template.New(name).Funcs(maps)
-		parse, err := tmp.Parse(tempText)
-		if err != nil {
-			panic(fmt.Sprintf("template parse err: %s", err.Error()))
+
+		switch name {
+		case "model.gotemplate":
+			tempText := temp.MustAssetString(name)
+			tmp := template.New(name).Funcs(maps)
+			parse, err := tmp.Parse(tempText)
+			if err != nil {
+				panic(fmt.Sprintf("template parse err: %s", err.Error()))
+			}
+			buffer := bytes.NewBuffer(nil)
+			err = parse.Execute(buffer, data.Mode)
+			source, err := format.Source(buffer.Bytes())
+			split := strings.Split(name, ".")
+			err = writeFile(path.Join(basePath, split[0]+".go"), source)
+			if err != nil {
+				panic(fmt.Sprintf("write file err: %s", err.Error()))
+			}
+		case "new.gotemplate":
+			tempText := temp.MustAssetString(name)
+			tmp := template.New(name).Funcs(maps)
+			parse, err := tmp.Parse(tempText)
+			if err != nil {
+				panic(fmt.Sprintf("template parse err: %s", err.Error()))
+			}
+			buffer := bytes.NewBuffer(nil)
+			err = parse.Execute(buffer, data.New)
+			source, err := format.Source(buffer.Bytes())
+			split := strings.Split(name, ".")
+			err = writeFile(path.Join(basePath, split[0]+".go"), source)
+			if err != nil {
+				panic(fmt.Sprintf("write file err: %s", err.Error()))
+			}
+		case "repo.gotemplate":
+			for _, ee := range data.RepoDataList {
+				tempText := temp.MustAssetString(name)
+				tmp := template.New(name).Funcs(maps)
+				parse, err := tmp.Parse(tempText)
+				if err != nil {
+					panic(fmt.Sprintf("template parse err: %s", err.Error()))
+				}
+				buffer := bytes.NewBuffer(nil)
+				err = parse.Execute(buffer, ee)
+				source, err := format.Source(buffer.Bytes())
+				split := strings.Split(name, ".")
+				err = writeFile(path.Join(basePath, schema.StrFirstLetterToLowercase(ee.EntityName)+"_"+split[0]+".go"), source)
+				if err != nil {
+					panic(fmt.Sprintf("write file err: %s", err.Error()))
+				}
+			}
 		}
-		buffer := bytes.NewBuffer(nil)
-		err = parse.Execute(buffer, data)
-		source, err := format.Source(buffer.Bytes())
-		split := strings.Split(name, ".")
-		err = writeFile(path.Join(basePath, split[0]+".go"), source)
-		if err != nil {
-			panic(fmt.Sprintf("write file err: %s", err.Error()))
-		}
+
 	}
 }
 
@@ -58,7 +95,7 @@ func writeFile(path string, source []byte) error {
 	if err != nil {
 		return err
 	}
-	defer build.CloseResource(file)
+	defer schema.CloseResource(file)
 	_, err = file.Write(source)
 	if err != nil {
 		return err

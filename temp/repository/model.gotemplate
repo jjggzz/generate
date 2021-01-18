@@ -1,7 +1,7 @@
 package {{.PackageName}}
 
 import (
-    {{range .EntityImport}}"{{.}}"
+    {{range .Imports}}"{{.}}"
     {{end}}
 )
 
@@ -9,7 +9,7 @@ import (
 // 表名:{{.TableName}}
 // comment:{{.EntityAnnotation}}
 type {{ .EntityName}} struct {
-	{{range .EntityFields}}{{.FieldName}} {{.FieldType}} `db:"{{.ColumnName}}" json:"{{.JsonTag}}"` // 字段: [{{.ColumnName}}] 类型:[{{.ColumnType}}] 注释: [{{.FieldAnnotation}}]
+	{{range .EntityFields}}{{.FieldName}} {{.FieldType}} `db:"{{.ColumnName}}" json:"{{StrFirstLetterToLowercase .FieldName}}"` // 字段: [{{.ColumnName}}] 类型:[{{.ColumnType}}] 注释: [{{.FieldAnnotation}}]
 	{{end}}
 }
 {{end}}

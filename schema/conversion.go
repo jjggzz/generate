@@ -1,7 +1,7 @@
 // author: JGZ
 // time:   2021-01-15 17:40
 // 将数据库中的结构转换成为模板需要的实体结构
-package build
+package schema
 
 import "strings"
 
@@ -44,8 +44,6 @@ func conversionField(field *TableField) *EntityField {
 	entityField.ColumnName = field.ColumnName
 	entityField.ColumnType = field.ColumnType
 	entityField.ColumnKey = field.ColumnKey
-	entityField.OrmTag = field.ColumnName
-	entityField.JsonTag = StrFirstLetterToLowercase(entityField.FieldName)
 	entityField.FieldAnnotation = field.ColumnComment
 	return entityField
 }

@@ -1,7 +1,7 @@
 // author: JGZ
 // time:   2021-01-15 17:40
 // 加载数据库中的表及字段结构
-package build
+package schema
 
 import (
 	"database/sql"

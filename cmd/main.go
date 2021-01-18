@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"github.com/jjggzz/generate/build"
 	"github.com/jjggzz/generate/generate"
+	"github.com/jjggzz/generate/schema"
 	"log"
 	"path"
 )
@@ -33,12 +33,12 @@ func main() {
 		return
 	}
 
-	build.Init(*userName, *password, *ip, *port, *schema)
-	tables, err := build.Load(*schema)
+	schema.Init(*userName, *password, *ip, *port, *schema)
+	tables, err := schema.Load(*schema)
 	if err != nil {
 		panic(err)
 	}
-	entitys := build.ConversionTableToEntity(tables)
-	data := build.NewData(*packageName, "gorm", entitys)
+	entitys := schema.ConversionTableToEntity(tables)
+	data := generate.New(*packageName, entitys)
 	generate.Generate(path.Join(*outputPath, *packageName), data)
 }
