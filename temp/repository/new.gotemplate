@@ -5,6 +5,11 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+type Repository struct {
+    {{range .Entitys}} {{.EntityName}}Repo {{.EntityName}}Repository
+    {{end}}
+}
+
 func NewRepo(db *sqlx.DB) Repository {
     return Repository{
         {{range .Entitys}} {{.EntityName}}Repo: New{{.EntityName}}Repo(db),
@@ -18,11 +23,6 @@ func New{{.EntityName}}Repo(db *sqlx.DB) {{.EntityName}}Repository {
     }
 }
 {{end}}
-
-type Repository struct {
-    {{range .Entitys}} {{.EntityName}}Repo {{.EntityName}}Repository
-    {{end}}
-}
 
 {{range .Entitys}}
 type {{.EntityName}}Repository interface {

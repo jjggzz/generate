@@ -5,6 +5,11 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+type Repository struct {
+	CustomerRepo CustomerRepository
+	DemoRepo     DemoRepository
+}
+
 func NewRepo(db *sqlx.DB) Repository {
 	return Repository{
 		CustomerRepo: NewCustomerRepo(db),
@@ -22,11 +27,6 @@ func NewDemoRepo(db *sqlx.DB) DemoRepository {
 	return &demoRepo{
 		db: db,
 	}
-}
-
-type Repository struct {
-	CustomerRepo CustomerRepository
-	DemoRepo     DemoRepository
 }
 
 type CustomerRepository interface {

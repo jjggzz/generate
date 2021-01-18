@@ -11,6 +11,7 @@ import (
 {{end}}
 
 {{range .Entitys}}
+    const {{StrFirstLetterToLowercase .EntityName}}ResultSql = "{{join .ColumnNames ", "}}"
     func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Insert({{StrFirstLetterToLowercase .EntityName}} *{{.EntityName}}) error {
         return nil
     }

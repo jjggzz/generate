@@ -24,6 +24,7 @@ func Generate(basePath string, data *build.Data) {
 
 	maps := template.FuncMap{
 		"StrFirstLetterToLowercase": build.StrFirstLetterToLowercase,
+		"join":                      strings.Join,
 	}
 	names := temp.AssetNames()
 	for _, name := range names {

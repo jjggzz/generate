@@ -9,6 +9,7 @@ type Entity struct {
 	PrimaryKeyName   string
 	PrimaryKeyType   string
 	EntityAnnotation string
+	ColumnNames      []string
 	EntityFields     []*EntityField
 }
 

@@ -21,14 +21,17 @@ func conversionTable(table *Table) *Entity {
 	entity.TableName = table.TableName
 	entity.EntityAnnotation = table.TableComment
 	entityFields := make([]*EntityField, 0, len(table.TableFields))
+	columnNames := make([]string, 0, len(table.TableFields))
 	for _, ee := range table.TableFields {
 		field := conversionField(ee)
 		entityFields = append(entityFields, field)
+		columnNames = append(columnNames, field.ColumnName)
 		if field.ColumnKey == "PRI" {
 			entity.PrimaryKeyName = field.FieldName
 			entity.PrimaryKeyType = field.FieldType
 		}
 	}
+	entity.ColumnNames = columnNames
 	entity.EntityFields = entityFields
 	return entity
 }
