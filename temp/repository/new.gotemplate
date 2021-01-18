@@ -1,36 +1,34 @@
 package {{.PackageName}}
 
-{{if eq .FrameworkName "gorm" }}
-    import (
-        "github.com/jinzhu/gorm"
-        _ "github.com/jinzhu/gorm/dialects/mysql"
-    )
+import (
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
+)
 
-    func NewRepo(db *gorm.DB) Repository {
-        return Repository{
-            {{range .Entitys}} {{.EntityName}}Repo: New{{.EntityName}}Repo(db),
-            {{end}}
-        }
-    }
-    {{range .Entitys}}
-    func New{{.EntityName}}Repo(db *gorm.DB) {{.EntityName}}Repository {
-        return &{{StrFirstLetterToLowercase .EntityName}}Repo {
-            db:db,
-        }
-    }
-    {{end}}
-
-    type Repository struct {
-        {{range .Entitys}} {{.EntityName}}Repo {{.EntityName}}Repository
+func NewRepo(db *sqlx.DB) Repository {
+    return Repository{
+        {{range .Entitys}} {{.EntityName}}Repo: New{{.EntityName}}Repo(db),
         {{end}}
     }
-
-    {{range .Entitys}}
-    type {{.EntityName}}Repository interface {
-        Insert(*{{.EntityName}}) error
-        Update(*{{.EntityName}}) error
-        DeleteByPrimaryKey({{.PrimaryKeyType}}) error
-        SelectByPrimaryKey({{.PrimaryKeyType}}) (*{{.EntityName}},error)
+}
+{{range .Entitys}}
+func New{{.EntityName}}Repo(db *sqlx.DB) {{.EntityName}}Repository {
+    return &{{StrFirstLetterToLowercase .EntityName}}Repo {
+        db:db,
     }
+}
+{{end}}
+
+type Repository struct {
+    {{range .Entitys}} {{.EntityName}}Repo {{.EntityName}}Repository
     {{end}}
+}
+
+{{range .Entitys}}
+type {{.EntityName}}Repository interface {
+    Insert(*{{.EntityName}}) error
+    Update(*{{.EntityName}}) error
+    DeleteByPrimaryKey({{.PrimaryKeyType}}) error
+    SelectByPrimaryKey({{.PrimaryKeyType}}) (*{{.EntityName}},error)
+}
 {{end}}

@@ -9,10 +9,7 @@ import (
 // 表名:{{.TableName}}
 // comment:{{.EntityAnnotation}}
 type {{ .EntityName}} struct {
-	{{range .EntityFields}}{{.FieldName}} {{.FieldType}} `{{$.FrameworkName}}:"{{.OrmTag}}" json:"{{.JsonTag}}"` // 字段: [{{.ColumnName}}] 类型:[{{.ColumnType}}] 注释: [{{.FieldAnnotation}}]
+	{{range .EntityFields}}{{.FieldName}} {{.FieldType}} `db:"{{.ColumnName}}" json:"{{.JsonTag}}"` // 字段: [{{.ColumnName}}] 类型:[{{.ColumnType}}] 注释: [{{.FieldAnnotation}}]
 	{{end}}
-}
-func ({{ .EntityName}}) TableName() string {
-	return "{{.TableName}}"
 }
 {{end}}

@@ -1,30 +1,26 @@
 package {{.PackageName}}
 
-{{if eq .FrameworkName "gorm" }}
-    import (
-        "github.com/jinzhu/gorm"
-    )
-    {{range .Entitys}}
-        type {{StrFirstLetterToLowercase .EntityName}}Repo struct {
-            db *gorm.DB
-        }
-    {{end}}
 
-    {{range .Entitys}}
-        func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Insert({{StrFirstLetterToLowercase .EntityName}} *{{.EntityName}}) error {
-            return repo.db.Create({{StrFirstLetterToLowercase .EntityName}}).Error
-        }
-        func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Update({{StrFirstLetterToLowercase .EntityName}} *{{.EntityName}}) error {
-            return repo.db.Save({{StrFirstLetterToLowercase .EntityName}}).Error
-        }
-        func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) DeleteByPrimaryKey(primaryKey {{.PrimaryKeyType}}) error {
-            {{StrFirstLetterToLowercase .EntityName}} := &{{.EntityName}}{ {{.PrimaryKeyName}}:primaryKey }
-            return repo.db.Delete({{StrFirstLetterToLowercase .EntityName}}).Error
-        }
-        func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) SelectByPrimaryKey(primaryKey {{.PrimaryKeyType}}) (*{{.EntityName}},error) {
-            {{StrFirstLetterToLowercase .EntityName}} := &{{.EntityName}}{}
-            return {{StrFirstLetterToLowercase .EntityName}},repo.db.First({{StrFirstLetterToLowercase .EntityName}}, primaryKey).Error
-        }
-    {{end}}
+import (
+	"github.com/jmoiron/sqlx"
+)
+{{range .Entitys}}
+    type {{StrFirstLetterToLowercase .EntityName}}Repo struct {
+        db *sqlx.DB
+    }
+{{end}}
 
+{{range .Entitys}}
+    func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Insert({{StrFirstLetterToLowercase .EntityName}} *{{.EntityName}}) error {
+        return nil
+    }
+    func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Update({{StrFirstLetterToLowercase .EntityName}} *{{.EntityName}}) error {
+        return nil
+    }
+    func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) DeleteByPrimaryKey(primaryKey {{.PrimaryKeyType}}) error {
+        return nil
+    }
+    func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) SelectByPrimaryKey(primaryKey {{.PrimaryKeyType}}) (*{{.EntityName}},error) {
+        return nil,nil
+    }
 {{end}}
