@@ -27,6 +27,8 @@ func conversionTable(table *Table) *Entity {
 		entityFields = append(entityFields, field)
 		columnNames = append(columnNames, field.ColumnName)
 		if field.ColumnKey == "PRI" {
+			entity.PrimaryKeyColumnName = field.ColumnName
+			entity.PrimaryKeyColumnType = field.ColumnType
 			entity.PrimaryKeyName = field.FieldName
 			entity.PrimaryKeyType = field.FieldType
 		}

@@ -44,13 +44,16 @@ type NewEntityField struct {
 }
 
 type RepoData struct {
-	PackageName    string
-	Imports        []string
-	EntityName     string
-	TableName      string
-	PrimaryKeyType string
-	ColumnNames    []string
-	EntityFields   []*RepoEntityField
+	PackageName          string
+	Imports              []string
+	EntityName           string
+	TableName            string
+	PrimaryKeyName       string
+	PrimaryKeyType       string
+	PrimaryKeyColumnName string
+	PrimaryKeyColumnType string
+	ColumnNames          []string
+	EntityFields         map[string]string
 }
 
 type RepoEntityField struct {

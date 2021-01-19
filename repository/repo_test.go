@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	"testing"
+	"time"
 )
 
 func Test_get(t *testing.T) {
@@ -17,11 +18,23 @@ func Test_get(t *testing.T) {
 	}
 
 	repo := NewRepo(db)
-	demo, err := repo.DemoRepo.SelectByPrimaryKey(1)
+	_ = Customer{
+		AccessKey:    "12345",
+		CreateTime:   time.Now(),
+		UpdateTime:   time.Now(),
+		DeleteStatus: 0,
+		Phone:        "18376301877",
+		Username:     "18376301877",
+		Password:     "",
+		Email:        "123@qq.com",
+		Nickname:     "jjggzz",
+		Status:       0,
+	}
+	count, err := repo.CustomerRepo.SelectByPrimaryKey(1640)
 	if err != nil {
 		panic(err)
 		return
 	}
-	fmt.Println(demo)
+	fmt.Println(count)
 
 }

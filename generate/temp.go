@@ -22,14 +22,22 @@ func New(packageName string, entitys []*schema.Entity) *Data {
 
 func buildRepoDataList(packageName string, entitys []*schema.Entity) []*RepoData {
 	data := make([]*RepoData, 0, len(entitys))
+	strings := make(map[string]string)
 	for _, e := range entitys {
 		repoData := new(RepoData)
 		repoData.PackageName = packageName
 		repoData.Imports = buildRepoImports(entitys)
+		repoData.PrimaryKeyName = e.PrimaryKeyName
 		repoData.PrimaryKeyType = e.PrimaryKeyType
+		repoData.PrimaryKeyColumnName = e.PrimaryKeyColumnName
+		repoData.PrimaryKeyColumnType = e.PrimaryKeyColumnType
 		repoData.EntityName = e.EntityName
 		repoData.TableName = e.TableName
 		repoData.ColumnNames = e.ColumnNames
+		for _, ee := range e.EntityFields {
+			strings[ee.ColumnName] = ee.FieldName
+		}
+		repoData.EntityFields = strings
 		data = append(data, repoData)
 	}
 	return data

@@ -25,13 +25,15 @@ type TableField struct {
 }
 
 type Entity struct {
-	EntityName       string
-	TableName        string
-	PrimaryKeyName   string
-	PrimaryKeyType   string
-	EntityAnnotation string
-	ColumnNames      []string
-	EntityFields     []*EntityField
+	EntityName           string
+	TableName            string
+	PrimaryKeyName       string
+	PrimaryKeyType       string
+	PrimaryKeyColumnName string
+	PrimaryKeyColumnType string
+	EntityAnnotation     string
+	ColumnNames          []string
+	EntityFields         []*EntityField
 }
 
 type EntityField struct {

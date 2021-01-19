@@ -29,9 +29,10 @@ func New{{.EntityName}}Repo(db *sqlx.DB) {{.EntityName}}Repository {
 
 {{range .Entitys}}
 type {{.EntityName}}Repository interface {
-    Insert(*{{.EntityName}}) error
-    Update(*{{.EntityName}}) error
-    DeleteByPrimaryKey({{.PrimaryKeyType}}) error
-    SelectByPrimaryKey({{.PrimaryKeyType}}) (*{{.EntityName}},error)
+    Count() (int64, error)
+    Insert(*{{.EntityName}}) (int64, error)
+    UpdateByPrimaryKey({{.PrimaryKeyType}},*{{.EntityName}}) (int64, error)
+    DeleteByPrimaryKey({{.PrimaryKeyType}}) (int64, error)
+    SelectByPrimaryKey({{.PrimaryKeyType}}) (*{{.EntityName}}, error)
 }
 {{end}}

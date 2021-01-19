@@ -2,6 +2,7 @@ package {{.PackageName}}
 
 
 import (
+    "database/sql"
 	"github.com/jmoiron/sqlx"
 
     {{range .Imports}}"{{.}}"
@@ -12,17 +13,58 @@ type {{StrFirstLetterToLowercase .EntityName}}Repo struct {
     db *sqlx.DB
 }
 
-const {{StrFirstLetterToLowercase .EntityName}}ResultSql = "{{join .ColumnNames ", "}}"
+// execute fail return -1 and err
+// execute success return count rows and nil
+func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Count() (int64, error) {
+   var count int64
+   	err := repo.db.Get(&count, "select count(*) from {{.TableName}}")
+   	if err != nil {
+   		return -1, err
+   	}
+   	return count,nil
+}
 
-func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Insert({{StrFirstLetterToLowercase .EntityName}} *{{.EntityName}}) error {
-    return nil
+// execute fail return -1 and err
+// execute success return affected rows and nil
+func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Insert({{StrFirstLetterToLowercase .EntityName}} *{{.EntityName}}) (int64, error) {
+    result, err := repo.db.Exec("insert into {{.TableName}}({{join .ColumnNames ", "}}) value ({{buildValueHold .ColumnNames}})"{{range .ColumnNames}},{{StrFirstLetterToLowercase $.EntityName}}.{{findMap . $.EntityFields}}{{end}})
+	if err != nil {
+		return -1,err
+	}
+	return result.RowsAffected()
 }
-func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Update({{StrFirstLetterToLowercase .EntityName}} *{{.EntityName}}) error {
-    return nil
+
+// execute fail return -1 and err
+// execute success return affected rows and nil
+func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) UpdateByPrimaryKey(primaryKey {{.PrimaryKeyType}},{{StrFirstLetterToLowercase .EntityName}} *{{.EntityName}}) (int64, error) {
+    result, err := repo.db.Exec("update {{.TableName}} set {{join .ColumnNames "=?, "}}=? where {{.PrimaryKeyColumnName}} = ?"{{range .ColumnNames}},{{StrFirstLetterToLowercase $.EntityName}}.{{findMap . $.EntityFields}}{{end}},primaryKey)
+    if err != nil {
+        return -1,err
+    }
+    return result.RowsAffected()
 }
-func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) DeleteByPrimaryKey(primaryKey {{.PrimaryKeyType}}) error {
-    return nil
+
+// execute fail return -1 and err
+// execute success return affected rows and nil
+func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) DeleteByPrimaryKey(primaryKey {{.PrimaryKeyType}}) (int64, error) {
+    result, err := repo.db.Exec("delete from {{.TableName}} where {{.PrimaryKeyColumnName}} = ?", primaryKey)
+    if err != nil {
+        return -1, err
+    }
+    return result.RowsAffected()
 }
+
+// execute fail return nil and err
+// execute success but no record return nil and nil
+// execute success has record return data and nil
 func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) SelectByPrimaryKey(primaryKey {{.PrimaryKeyType}}) (*{{.EntityName}},error) {
-    return nil,nil
+	{{StrFirstLetterToLowercase .EntityName}} := new({{.EntityName}})
+	err := repo.db.Get({{StrFirstLetterToLowercase .EntityName}}, "select {{join .ColumnNames ", "}} from {{.TableName}} where {{.PrimaryKeyColumnName}} = ?", primaryKey)
+	if err == sql.ErrNoRows {
+        return nil, nil
+    }
+    if err != nil {
+        return nil, err
+    }
+    return {{StrFirstLetterToLowercase .EntityName}}, nil
 }

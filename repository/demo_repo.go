@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -8,18 +9,58 @@ type demoRepo struct {
 	db *sqlx.DB
 }
 
-const demoResultSql = "id, bitType, longblobType"
+// execute fail return -1 and err
+// execute success return count rows and nil
+func (repo *demoRepo) Count() (int64, error) {
+	var count int64
+	err := repo.db.Get(&count, "select count(*) from demo")
+	if err != nil {
+		return -1, err
+	}
+	return count, nil
+}
 
-func (repo *demoRepo) Insert(demo *Demo) error {
-	return nil
+// execute fail return -1 and err
+// execute success return affected rows and nil
+func (repo *demoRepo) Insert(demo *Demo) (int64, error) {
+	result, err := repo.db.Exec("insert into demo(id, bitType, longblobType) value (?,?,?)", demo.Id, demo.BitType, demo.LongblobType)
+	if err != nil {
+		return -1, err
+	}
+	return result.RowsAffected()
 }
-func (repo *demoRepo) Update(demo *Demo) error {
-	return nil
+
+// execute fail return -1 and err
+// execute success return affected rows and nil
+func (repo *demoRepo) UpdateByPrimaryKey(primaryKey int32, demo *Demo) (int64, error) {
+	result, err := repo.db.Exec("update demo set id=?, bitType=?, longblobType=? where id = ?", demo.Id, demo.BitType, demo.LongblobType, primaryKey)
+	if err != nil {
+		return -1, err
+	}
+	return result.RowsAffected()
 }
-func (repo *demoRepo) DeleteByPrimaryKey(primaryKey int32) error {
-	return nil
+
+// execute fail return -1 and err
+// execute success return affected rows and nil
+func (repo *demoRepo) DeleteByPrimaryKey(primaryKey int32) (int64, error) {
+	result, err := repo.db.Exec("delete from demo where id = ?", primaryKey)
+	if err != nil {
+		return -1, err
+	}
+	return result.RowsAffected()
 }
+
+// execute fail return nil and err
+// execute success but no record return nil and nil
+// execute success has record return data and nil
 func (repo *demoRepo) SelectByPrimaryKey(primaryKey int32) (*Demo, error) {
 	demo := new(Demo)
-	return demo, repo.db.Get(demo, "select "+demoResultSql+" from demo where id = ?", primaryKey)
+	err := repo.db.Get(demo, "select id, bitType, longblobType from demo where id = ?", primaryKey)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+	return demo, nil
 }

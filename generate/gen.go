@@ -25,6 +25,8 @@ func Generate(basePath string, data *Data) {
 	maps := template.FuncMap{
 		"StrFirstLetterToLowercase": schema.StrFirstLetterToLowercase,
 		"join":                      strings.Join,
+		"buildValueHold":            BuildValueHold,
+		"findMap":                   func(key string, maps map[string]string) string { return maps[key] },
 	}
 	names := temp.AssetNames()
 	for _, name := range names {
@@ -80,6 +82,18 @@ func Generate(basePath string, data *Data) {
 		}
 
 	}
+}
+
+func BuildValueHold(columns []string) string {
+	str := ""
+	for i := range columns {
+		if i == 0 {
+			str += "?"
+		} else {
+			str += ",?"
+		}
+	}
+	return str
 }
 
 func isDir(path string) bool {
