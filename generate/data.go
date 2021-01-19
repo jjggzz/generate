@@ -47,7 +47,9 @@ type RepoData struct {
 	PackageName    string
 	Imports        []string
 	EntityName     string
+	TableName      string
 	PrimaryKeyType string
+	ColumnNames    []string
 	EntityFields   []*RepoEntityField
 }
 

@@ -94,9 +94,9 @@ func conversionColumnTypeToEntityType(columnType string) string {
 	split := strings.Split(columnType, "(")
 	switch strings.ToLower(split[0]) {
 	case "bit":
-		return "bool"
+		return "[]byte"
 	case "tinyint":
-		return "int8"
+		return "bool"
 	case "smallint":
 		return "int16"
 	case "int", "integer":

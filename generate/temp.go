@@ -28,6 +28,8 @@ func buildRepoDataList(packageName string, entitys []*schema.Entity) []*RepoData
 		repoData.Imports = buildRepoImports(entitys)
 		repoData.PrimaryKeyType = e.PrimaryKeyType
 		repoData.EntityName = e.EntityName
+		repoData.TableName = e.TableName
+		repoData.ColumnNames = e.ColumnNames
 		data = append(data, repoData)
 	}
 	return data

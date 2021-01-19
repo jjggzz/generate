@@ -13,7 +13,7 @@ var (
 	port        = flag.Int("port", 3306, "db server port")
 	userName    = flag.String("u", "", "db server username")
 	password    = flag.String("p", "", "db server password")
-	schema      = flag.String("schema", "", "db server name")
+	db          = flag.String("db", "", "db server name")
 	packageName = flag.String("pkg", "repository", "go package name")
 	outputPath  = flag.String("out", "./", "file output path")
 )
@@ -28,13 +28,13 @@ func main() {
 		log.Println("place input password")
 		return
 	}
-	if *schema == "" {
+	if *db == "" {
 		log.Println("place input name")
 		return
 	}
 
-	schema.Init(*userName, *password, *ip, *port, *schema)
-	tables, err := schema.Load(*schema)
+	schema.Init(*userName, *password, *ip, *port, *db)
+	tables, err := schema.Load(*db)
 	if err != nil {
 		panic(err)
 	}

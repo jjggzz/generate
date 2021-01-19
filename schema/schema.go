@@ -24,6 +24,25 @@ type TableField struct {
 	ColumnComment string
 }
 
+type Entity struct {
+	EntityName       string
+	TableName        string
+	PrimaryKeyName   string
+	PrimaryKeyType   string
+	EntityAnnotation string
+	ColumnNames      []string
+	EntityFields     []*EntityField
+}
+
+type EntityField struct {
+	FieldName       string
+	FieldType       string
+	ColumnName      string
+	ColumnType      string
+	ColumnKey       string
+	FieldAnnotation string
+}
+
 var db *sql.DB
 
 func Init(userName string, password string, ip string, port int, schema string) {
