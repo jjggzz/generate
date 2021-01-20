@@ -71,18 +71,18 @@ func (repo *customerRepo) SelectByPrimaryKey(primaryKey int64) (*Customer, error
 // execute success has record return data and nil
 func (repo *customerRepo) SelectByExample(example *CustomerExample) ([]*Customer, error) {
 	var list []*Customer
-	criteria := example.Criteria
+	criteria := example.criteria
 	var params []interface{}
 	var condition = ""
 	if len(criteria) > 0 {
 		var fragments []string
 		for _, e := range criteria {
-			fragments = append(fragments, e.Fragment)
+			fragments = append(fragments, e.fragment)
 			if !e.noValue {
-				params = append(params, e.Param1)
+				params = append(params, e.param1)
 			}
 			if e.betweenValue {
-				params = append(params, e.Param2)
+				params = append(params, e.param2)
 			}
 		}
 		condition += "where " + strings.TrimLeft(strings.Join(fragments, " "), "and")
