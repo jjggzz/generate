@@ -18,6 +18,7 @@ type {{.EntityName}}Example struct {
 	Criteria []struct {
 		Fragment string
 		Param    interface{}
+		noValue  bool
 	}
 }
 
@@ -89,9 +90,11 @@ func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) SelectByExample(examp
     		var fragments []string
     		for _, e := range criteria {
     			fragments = append(fragments, e.Fragment)
-    			params = append(params, e.Param)
+    			if !e.noValue {
+    			    params = append(params, e.Param)
+    			}
     		}
-    		condition += "where " + strings.TrimLeft(strings.Join(fragments, ""), "and")
+    		condition += "where " + strings.TrimLeft(strings.Join(fragments, " "), "and")
     	}
     	return list, repo.db.Select(&list, "select {{join .ColumnNames ", "}} from {{.TableName}} "+condition, params...)
 }
@@ -101,6 +104,7 @@ func (ex *{{$.EntityName}}Example) And{{.FieldName}}EqualTo(param {{.FieldType}}
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
+		noValue  bool
 	}{Fragment: "and {{.ColumnName}} = ?", Param: param})
 	return ex
 }
@@ -109,7 +113,24 @@ func (ex *{{$.EntityName}}Example) And{{.FieldName}}NotEqualTo(param {{.FieldTyp
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
+		noValue  bool
 	}{Fragment: "and {{.ColumnName}} <> ?", Param: param})
+	return ex
+}
+func (ex *{{$.EntityName}}Example) And{{.FieldName}}IsNull() *{{$.EntityName}}Example {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and {{.ColumnName}} is null", noValue:true})
+	return ex
+}
+func (ex *{{$.EntityName}}Example) And{{.FieldName}}IsNotNull() *{{$.EntityName}}Example {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and {{.ColumnName}} is not null", noValue:true})
 	return ex
 }
 {{end}}
