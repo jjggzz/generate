@@ -16,9 +16,11 @@ type {{StrFirstLetterToLowercase .EntityName}}Repo struct {
 
 type {{.EntityName}}Example struct {
 	Criteria []struct {
-		Fragment string
-		Param    interface{}
-		noValue  bool
+		Fragment     string
+		Param1       interface{}
+		Param2       interface{}
+		noValue      bool
+		betweenValue bool
 	}
 }
 
@@ -91,9 +93,12 @@ func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) SelectByExample(examp
     		for _, e := range criteria {
     			fragments = append(fragments, e.Fragment)
     			if !e.noValue {
-    			    params = append(params, e.Param)
-    			}
-    		}
+                    params = append(params, e.Param1)
+                }
+                if e.betweenValue {
+                    params = append(params, e.Param2)
+                }
+            }
     		condition += "where " + strings.TrimLeft(strings.Join(fragments, " "), "and")
     	}
         query, args, err := sqlx.In("select {{join .ColumnNames ", "}} from {{.TableName}} "+condition, params...)
@@ -106,91 +111,135 @@ func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) SelectByExample(examp
 {{range .EntityFields}}
 func (ex *{{$.EntityName}}Example) And{{.FieldName}}IsNull() *{{$.EntityName}}Example {
 	ex.Criteria = append(ex.Criteria, struct {
-		Fragment string
-		Param    interface{}
-		noValue  bool
+		Fragment     string
+		Param1       interface{}
+		Param2       interface{}
+		noValue      bool
+		betweenValue bool
 	}{Fragment: "and {{.ColumnName}} is null", noValue:true})
 	return ex
 }
 
 func (ex *{{$.EntityName}}Example) And{{.FieldName}}IsNotNull() *{{$.EntityName}}Example {
 	ex.Criteria = append(ex.Criteria, struct {
-		Fragment string
-		Param    interface{}
-		noValue  bool
+		Fragment     string
+		Param1       interface{}
+		Param2       interface{}
+		noValue      bool
+		betweenValue bool
 	}{Fragment: "and {{.ColumnName}} is not null", noValue:true})
 	return ex
 }
 
 func (ex *{{$.EntityName}}Example) And{{.FieldName}}EqualTo(param {{.FieldType}}) *{{$.EntityName}}Example {
 	ex.Criteria = append(ex.Criteria, struct {
-		Fragment string
-		Param    interface{}
-		noValue  bool
-	}{Fragment: "and {{.ColumnName}} = ?", Param: param})
+		Fragment     string
+		Param1       interface{}
+		Param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{Fragment: "and {{.ColumnName}} = ?", Param1: param})
 	return ex
 }
 
 func (ex *{{$.EntityName}}Example) And{{.FieldName}}NotEqualTo(param {{.FieldType}}) *{{$.EntityName}}Example {
 	ex.Criteria = append(ex.Criteria, struct {
-		Fragment string
-		Param    interface{}
-		noValue  bool
-	}{Fragment: "and {{.ColumnName}} <> ?", Param: param})
+		Fragment     string
+		Param1       interface{}
+		Param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{Fragment: "and {{.ColumnName}} <> ?", Param1: param})
 	return ex
 }
 
 func (ex *{{$.EntityName}}Example) And{{.FieldName}}GreaterThan(param {{.FieldType}}) *{{$.EntityName}}Example {
 	ex.Criteria = append(ex.Criteria, struct {
-		Fragment string
-		Param    interface{}
-		noValue  bool
-	}{Fragment: "and {{.ColumnName}} > ?", Param: param})
+		Fragment     string
+		Param1       interface{}
+		Param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{Fragment: "and {{.ColumnName}} > ?", Param1: param})
 	return ex
 }
 
 func (ex *{{$.EntityName}}Example) And{{.FieldName}}GreaterThanOrEqualTo(param {{.FieldType}}) *{{$.EntityName}}Example {
 	ex.Criteria = append(ex.Criteria, struct {
-		Fragment string
-		Param    interface{}
-		noValue  bool
-	}{Fragment: "and {{.ColumnName}} >= ?", Param: param})
+		Fragment     string
+		Param1       interface{}
+		Param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{Fragment: "and {{.ColumnName}} >= ?", Param1: param})
 	return ex
 }
 func (ex *{{$.EntityName}}Example) And{{.FieldName}}LessThan(param {{.FieldType}}) *{{$.EntityName}}Example {
 	ex.Criteria = append(ex.Criteria, struct {
-		Fragment string
-		Param    interface{}
-		noValue  bool
-	}{Fragment: "and {{.ColumnName}} < ?", Param: param})
+		Fragment     string
+		Param1       interface{}
+		Param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{Fragment: "and {{.ColumnName}} < ?", Param1: param})
 	return ex
 }
 
 func (ex *{{$.EntityName}}Example) And{{.FieldName}}LessThanOrEqualTo(param {{.FieldType}}) *{{$.EntityName}}Example {
 	ex.Criteria = append(ex.Criteria, struct {
-		Fragment string
-		Param    interface{}
-		noValue  bool
-	}{Fragment: "and {{.ColumnName}} <= ?", Param: param})
+		Fragment     string
+		Param1       interface{}
+		Param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{Fragment: "and {{.ColumnName}} <= ?", Param1: param})
 	return ex
 }
 
 func (ex *{{$.EntityName}}Example) And{{.FieldName}}In(param []{{.FieldType}}) *{{$.EntityName}}Example {
 	ex.Criteria = append(ex.Criteria, struct {
-		Fragment string
-		Param    interface{}
-		noValue  bool
-	}{Fragment: "and {{.ColumnName}} in (?)", Param: param})
+		Fragment     string
+		Param1       interface{}
+		Param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{Fragment: "and {{.ColumnName}} in (?)", Param1: param})
 	return ex
 }
+
 func (ex *{{$.EntityName}}Example) And{{.FieldName}}NotIn(param []{{.FieldType}}) *{{$.EntityName}}Example {
 	ex.Criteria = append(ex.Criteria, struct {
-		Fragment string
-		Param    interface{}
-		noValue  bool
-	}{Fragment: "and {{.ColumnName}} not in (?)", Param: param})
+		Fragment     string
+		Param1       interface{}
+		Param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{Fragment: "and {{.ColumnName}} not in (?)", Param1: param})
 	return ex
 }
+
+func (ex *{{$.EntityName}}Example) And{{.FieldName}}Between(param1 {{.FieldType}}, param2 {{.FieldType}}) *{{$.EntityName}}Example {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment     string
+		Param1       interface{}
+		Param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{Fragment: "and {{.ColumnName}} between ? and ?", Param1: param1,Param2: param2,betweenValue:true})
+	return ex
+}
+
+func (ex *{{$.EntityName}}Example) And{{.FieldName}}NotBetween(param1 {{.FieldType}}, param2 {{.FieldType}}) *{{$.EntityName}}Example {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment     string
+		Param1       interface{}
+		Param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{Fragment: "and {{.ColumnName}} not between ? and ?", Param1: param1,Param2: param2,betweenValue:true})
+	return ex
+}
+
 {{end}}
 
 
