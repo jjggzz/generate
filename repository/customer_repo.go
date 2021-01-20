@@ -94,7 +94,29 @@ func (repo *customerRepo) SelectByExample(example *CustomerExample) ([]*Customer
 		}
 		condition += "where " + strings.TrimLeft(strings.Join(fragments, " "), "and")
 	}
-	return list, repo.db.Select(&list, "select id, access_key, create_time, update_time, delete_status, phone, username, password, email, nickname, status from customer "+condition, params...)
+	query, args, err := sqlx.In("select id, access_key, create_time, update_time, delete_status, phone, username, password, email, nickname, status from customer "+condition, params...)
+	if err != nil {
+		return list, err
+	}
+	return list, repo.db.Select(&list, query, args...)
+}
+
+func (ex *CustomerExample) AndIdIsNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and id is null", noValue: true})
+	return ex
+}
+
+func (ex *CustomerExample) AndIdIsNotNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and id is not null", noValue: true})
+	return ex
 }
 
 func (ex *CustomerExample) AndIdEqualTo(param int64) *CustomerExample {
@@ -114,20 +136,74 @@ func (ex *CustomerExample) AndIdNotEqualTo(param int64) *CustomerExample {
 	}{Fragment: "and id <> ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndIdIsNull() *CustomerExample {
+
+func (ex *CustomerExample) AndIdGreaterThan(param int64) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and id is null", noValue: true})
+	}{Fragment: "and id > ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndIdIsNotNull() *CustomerExample {
+
+func (ex *CustomerExample) AndIdGreaterThanOrEqualTo(param int64) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and id is not null", noValue: true})
+	}{Fragment: "and id >= ?", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndIdLessThan(param int64) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and id < ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndIdLessThanOrEqualTo(param int64) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and id <= ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndIdIn(param []int64) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and id in (?)", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndIdNotIn(param []int64) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and id not in (?)", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndAccessKeyIsNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and access_key is null", noValue: true})
+	return ex
+}
+
+func (ex *CustomerExample) AndAccessKeyIsNotNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and access_key is not null", noValue: true})
 	return ex
 }
 
@@ -148,20 +224,74 @@ func (ex *CustomerExample) AndAccessKeyNotEqualTo(param string) *CustomerExample
 	}{Fragment: "and access_key <> ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndAccessKeyIsNull() *CustomerExample {
+
+func (ex *CustomerExample) AndAccessKeyGreaterThan(param string) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and access_key is null", noValue: true})
+	}{Fragment: "and access_key > ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndAccessKeyIsNotNull() *CustomerExample {
+
+func (ex *CustomerExample) AndAccessKeyGreaterThanOrEqualTo(param string) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and access_key is not null", noValue: true})
+	}{Fragment: "and access_key >= ?", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndAccessKeyLessThan(param string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and access_key < ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndAccessKeyLessThanOrEqualTo(param string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and access_key <= ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndAccessKeyIn(param []string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and access_key in (?)", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndAccessKeyNotIn(param []string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and access_key not in (?)", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndCreateTimeIsNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and create_time is null", noValue: true})
+	return ex
+}
+
+func (ex *CustomerExample) AndCreateTimeIsNotNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and create_time is not null", noValue: true})
 	return ex
 }
 
@@ -182,20 +312,74 @@ func (ex *CustomerExample) AndCreateTimeNotEqualTo(param time.Time) *CustomerExa
 	}{Fragment: "and create_time <> ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndCreateTimeIsNull() *CustomerExample {
+
+func (ex *CustomerExample) AndCreateTimeGreaterThan(param time.Time) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and create_time is null", noValue: true})
+	}{Fragment: "and create_time > ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndCreateTimeIsNotNull() *CustomerExample {
+
+func (ex *CustomerExample) AndCreateTimeGreaterThanOrEqualTo(param time.Time) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and create_time is not null", noValue: true})
+	}{Fragment: "and create_time >= ?", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndCreateTimeLessThan(param time.Time) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and create_time < ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndCreateTimeLessThanOrEqualTo(param time.Time) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and create_time <= ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndCreateTimeIn(param []time.Time) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and create_time in (?)", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndCreateTimeNotIn(param []time.Time) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and create_time not in (?)", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndUpdateTimeIsNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and update_time is null", noValue: true})
+	return ex
+}
+
+func (ex *CustomerExample) AndUpdateTimeIsNotNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and update_time is not null", noValue: true})
 	return ex
 }
 
@@ -216,20 +400,74 @@ func (ex *CustomerExample) AndUpdateTimeNotEqualTo(param time.Time) *CustomerExa
 	}{Fragment: "and update_time <> ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndUpdateTimeIsNull() *CustomerExample {
+
+func (ex *CustomerExample) AndUpdateTimeGreaterThan(param time.Time) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and update_time is null", noValue: true})
+	}{Fragment: "and update_time > ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndUpdateTimeIsNotNull() *CustomerExample {
+
+func (ex *CustomerExample) AndUpdateTimeGreaterThanOrEqualTo(param time.Time) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and update_time is not null", noValue: true})
+	}{Fragment: "and update_time >= ?", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndUpdateTimeLessThan(param time.Time) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and update_time < ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndUpdateTimeLessThanOrEqualTo(param time.Time) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and update_time <= ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndUpdateTimeIn(param []time.Time) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and update_time in (?)", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndUpdateTimeNotIn(param []time.Time) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and update_time not in (?)", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndDeleteStatusIsNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and delete_status is null", noValue: true})
+	return ex
+}
+
+func (ex *CustomerExample) AndDeleteStatusIsNotNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and delete_status is not null", noValue: true})
 	return ex
 }
 
@@ -250,20 +488,74 @@ func (ex *CustomerExample) AndDeleteStatusNotEqualTo(param int32) *CustomerExamp
 	}{Fragment: "and delete_status <> ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndDeleteStatusIsNull() *CustomerExample {
+
+func (ex *CustomerExample) AndDeleteStatusGreaterThan(param int32) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and delete_status is null", noValue: true})
+	}{Fragment: "and delete_status > ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndDeleteStatusIsNotNull() *CustomerExample {
+
+func (ex *CustomerExample) AndDeleteStatusGreaterThanOrEqualTo(param int32) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and delete_status is not null", noValue: true})
+	}{Fragment: "and delete_status >= ?", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndDeleteStatusLessThan(param int32) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and delete_status < ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndDeleteStatusLessThanOrEqualTo(param int32) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and delete_status <= ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndDeleteStatusIn(param []int32) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and delete_status in (?)", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndDeleteStatusNotIn(param []int32) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and delete_status not in (?)", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndPhoneIsNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and phone is null", noValue: true})
+	return ex
+}
+
+func (ex *CustomerExample) AndPhoneIsNotNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and phone is not null", noValue: true})
 	return ex
 }
 
@@ -284,20 +576,74 @@ func (ex *CustomerExample) AndPhoneNotEqualTo(param string) *CustomerExample {
 	}{Fragment: "and phone <> ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndPhoneIsNull() *CustomerExample {
+
+func (ex *CustomerExample) AndPhoneGreaterThan(param string) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and phone is null", noValue: true})
+	}{Fragment: "and phone > ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndPhoneIsNotNull() *CustomerExample {
+
+func (ex *CustomerExample) AndPhoneGreaterThanOrEqualTo(param string) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and phone is not null", noValue: true})
+	}{Fragment: "and phone >= ?", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndPhoneLessThan(param string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and phone < ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndPhoneLessThanOrEqualTo(param string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and phone <= ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndPhoneIn(param []string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and phone in (?)", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndPhoneNotIn(param []string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and phone not in (?)", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndUsernameIsNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and username is null", noValue: true})
+	return ex
+}
+
+func (ex *CustomerExample) AndUsernameIsNotNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and username is not null", noValue: true})
 	return ex
 }
 
@@ -318,20 +664,74 @@ func (ex *CustomerExample) AndUsernameNotEqualTo(param string) *CustomerExample 
 	}{Fragment: "and username <> ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndUsernameIsNull() *CustomerExample {
+
+func (ex *CustomerExample) AndUsernameGreaterThan(param string) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and username is null", noValue: true})
+	}{Fragment: "and username > ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndUsernameIsNotNull() *CustomerExample {
+
+func (ex *CustomerExample) AndUsernameGreaterThanOrEqualTo(param string) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and username is not null", noValue: true})
+	}{Fragment: "and username >= ?", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndUsernameLessThan(param string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and username < ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndUsernameLessThanOrEqualTo(param string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and username <= ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndUsernameIn(param []string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and username in (?)", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndUsernameNotIn(param []string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and username not in (?)", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndPasswordIsNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and password is null", noValue: true})
+	return ex
+}
+
+func (ex *CustomerExample) AndPasswordIsNotNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and password is not null", noValue: true})
 	return ex
 }
 
@@ -352,20 +752,74 @@ func (ex *CustomerExample) AndPasswordNotEqualTo(param string) *CustomerExample 
 	}{Fragment: "and password <> ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndPasswordIsNull() *CustomerExample {
+
+func (ex *CustomerExample) AndPasswordGreaterThan(param string) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and password is null", noValue: true})
+	}{Fragment: "and password > ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndPasswordIsNotNull() *CustomerExample {
+
+func (ex *CustomerExample) AndPasswordGreaterThanOrEqualTo(param string) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and password is not null", noValue: true})
+	}{Fragment: "and password >= ?", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndPasswordLessThan(param string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and password < ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndPasswordLessThanOrEqualTo(param string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and password <= ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndPasswordIn(param []string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and password in (?)", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndPasswordNotIn(param []string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and password not in (?)", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndEmailIsNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and email is null", noValue: true})
+	return ex
+}
+
+func (ex *CustomerExample) AndEmailIsNotNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and email is not null", noValue: true})
 	return ex
 }
 
@@ -386,20 +840,74 @@ func (ex *CustomerExample) AndEmailNotEqualTo(param string) *CustomerExample {
 	}{Fragment: "and email <> ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndEmailIsNull() *CustomerExample {
+
+func (ex *CustomerExample) AndEmailGreaterThan(param string) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and email is null", noValue: true})
+	}{Fragment: "and email > ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndEmailIsNotNull() *CustomerExample {
+
+func (ex *CustomerExample) AndEmailGreaterThanOrEqualTo(param string) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and email is not null", noValue: true})
+	}{Fragment: "and email >= ?", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndEmailLessThan(param string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and email < ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndEmailLessThanOrEqualTo(param string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and email <= ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndEmailIn(param []string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and email in (?)", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndEmailNotIn(param []string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and email not in (?)", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndNicknameIsNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and nickname is null", noValue: true})
+	return ex
+}
+
+func (ex *CustomerExample) AndNicknameIsNotNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and nickname is not null", noValue: true})
 	return ex
 }
 
@@ -420,20 +928,74 @@ func (ex *CustomerExample) AndNicknameNotEqualTo(param string) *CustomerExample 
 	}{Fragment: "and nickname <> ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndNicknameIsNull() *CustomerExample {
+
+func (ex *CustomerExample) AndNicknameGreaterThan(param string) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and nickname is null", noValue: true})
+	}{Fragment: "and nickname > ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndNicknameIsNotNull() *CustomerExample {
+
+func (ex *CustomerExample) AndNicknameGreaterThanOrEqualTo(param string) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and nickname is not null", noValue: true})
+	}{Fragment: "and nickname >= ?", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndNicknameLessThan(param string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and nickname < ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndNicknameLessThanOrEqualTo(param string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and nickname <= ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndNicknameIn(param []string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and nickname in (?)", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndNicknameNotIn(param []string) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and nickname not in (?)", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndStatusIsNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and status is null", noValue: true})
+	return ex
+}
+
+func (ex *CustomerExample) AndStatusIsNotNull() *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and status is not null", noValue: true})
 	return ex
 }
 
@@ -454,19 +1016,55 @@ func (ex *CustomerExample) AndStatusNotEqualTo(param int32) *CustomerExample {
 	}{Fragment: "and status <> ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndStatusIsNull() *CustomerExample {
+
+func (ex *CustomerExample) AndStatusGreaterThan(param int32) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and status is null", noValue: true})
+	}{Fragment: "and status > ?", Param: param})
 	return ex
 }
-func (ex *CustomerExample) AndStatusIsNotNull() *CustomerExample {
+
+func (ex *CustomerExample) AndStatusGreaterThanOrEqualTo(param int32) *CustomerExample {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and status is not null", noValue: true})
+	}{Fragment: "and status >= ?", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndStatusLessThan(param int32) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and status < ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndStatusLessThanOrEqualTo(param int32) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and status <= ?", Param: param})
+	return ex
+}
+
+func (ex *CustomerExample) AndStatusIn(param []int32) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and status in (?)", Param: param})
+	return ex
+}
+func (ex *CustomerExample) AndStatusNotIn(param []int32) *CustomerExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and status not in (?)", Param: param})
 	return ex
 }

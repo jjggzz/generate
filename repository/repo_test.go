@@ -18,7 +18,7 @@ func Test_get(t *testing.T) {
 
 	repo := NewRepo(db)
 
-	list, err := repo.CustomerRepo.SelectByExample(new(CustomerExample).AndIdEqualTo(1639).AndEmailIsNotNull())
+	list, err := repo.CustomerRepo.SelectByExample(new(CustomerExample).AndAccessKeyIn([]string{"ehuDIF", "oRtpuc"}).AndEmailIsNotNull())
 	if err != nil {
 		panic(err)
 		return

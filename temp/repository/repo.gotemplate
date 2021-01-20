@@ -96,10 +96,32 @@ func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) SelectByExample(examp
     		}
     		condition += "where " + strings.TrimLeft(strings.Join(fragments, " "), "and")
     	}
-    	return list, repo.db.Select(&list, "select {{join .ColumnNames ", "}} from {{.TableName}} "+condition, params...)
+        query, args, err := sqlx.In("select {{join .ColumnNames ", "}} from {{.TableName}} "+condition, params...)
+        if err != nil {
+            return list,err
+        }
+    	return list, repo.db.Select(&list, query, args...)
 }
 
 {{range .EntityFields}}
+func (ex *{{$.EntityName}}Example) And{{.FieldName}}IsNull() *{{$.EntityName}}Example {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and {{.ColumnName}} is null", noValue:true})
+	return ex
+}
+
+func (ex *{{$.EntityName}}Example) And{{.FieldName}}IsNotNull() *{{$.EntityName}}Example {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and {{.ColumnName}} is not null", noValue:true})
+	return ex
+}
+
 func (ex *{{$.EntityName}}Example) And{{.FieldName}}EqualTo(param {{.FieldType}}) *{{$.EntityName}}Example {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
@@ -117,20 +139,56 @@ func (ex *{{$.EntityName}}Example) And{{.FieldName}}NotEqualTo(param {{.FieldTyp
 	}{Fragment: "and {{.ColumnName}} <> ?", Param: param})
 	return ex
 }
-func (ex *{{$.EntityName}}Example) And{{.FieldName}}IsNull() *{{$.EntityName}}Example {
+
+func (ex *{{$.EntityName}}Example) And{{.FieldName}}GreaterThan(param {{.FieldType}}) *{{$.EntityName}}Example {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and {{.ColumnName}} is null", noValue:true})
+	}{Fragment: "and {{.ColumnName}} > ?", Param: param})
 	return ex
 }
-func (ex *{{$.EntityName}}Example) And{{.FieldName}}IsNotNull() *{{$.EntityName}}Example {
+
+func (ex *{{$.EntityName}}Example) And{{.FieldName}}GreaterThanOrEqualTo(param {{.FieldType}}) *{{$.EntityName}}Example {
 	ex.Criteria = append(ex.Criteria, struct {
 		Fragment string
 		Param    interface{}
 		noValue  bool
-	}{Fragment: "and {{.ColumnName}} is not null", noValue:true})
+	}{Fragment: "and {{.ColumnName}} >= ?", Param: param})
+	return ex
+}
+func (ex *{{$.EntityName}}Example) And{{.FieldName}}LessThan(param {{.FieldType}}) *{{$.EntityName}}Example {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and {{.ColumnName}} < ?", Param: param})
+	return ex
+}
+
+func (ex *{{$.EntityName}}Example) And{{.FieldName}}LessThanOrEqualTo(param {{.FieldType}}) *{{$.EntityName}}Example {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and {{.ColumnName}} <= ?", Param: param})
+	return ex
+}
+
+func (ex *{{$.EntityName}}Example) And{{.FieldName}}In(param []{{.FieldType}}) *{{$.EntityName}}Example {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and {{.ColumnName}} in (?)", Param: param})
+	return ex
+}
+func (ex *{{$.EntityName}}Example) And{{.FieldName}}NotIn(param []{{.FieldType}}) *{{$.EntityName}}Example {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+		noValue  bool
+	}{Fragment: "and {{.ColumnName}} not in (?)", Param: param})
 	return ex
 }
 {{end}}
