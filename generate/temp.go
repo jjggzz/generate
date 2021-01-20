@@ -22,11 +22,11 @@ func New(packageName string, entitys []*schema.Entity) *Data {
 
 func buildRepoDataList(packageName string, entitys []*schema.Entity) []*RepoData {
 	data := make([]*RepoData, 0, len(entitys))
-	strings := make(map[string]string)
+
 	for _, e := range entitys {
 		repoData := new(RepoData)
 		repoData.PackageName = packageName
-		repoData.Imports = buildRepoImports(entitys)
+		repoData.Imports = buildRepoImports(e)
 		repoData.PrimaryKeyName = e.PrimaryKeyName
 		repoData.PrimaryKeyType = e.PrimaryKeyType
 		repoData.PrimaryKeyColumnName = e.PrimaryKeyColumnName
@@ -34,18 +34,36 @@ func buildRepoDataList(packageName string, entitys []*schema.Entity) []*RepoData
 		repoData.EntityName = e.EntityName
 		repoData.TableName = e.TableName
 		repoData.ColumnNames = e.ColumnNames
+		fields := make([]*RepoEntityField, 0, len(e.EntityFields))
+		strings := make(map[string]string)
 		for _, ee := range e.EntityFields {
+			field := new(RepoEntityField)
+			field.FieldName = ee.FieldName
+			field.ColumnName = ee.ColumnName
+			field.ColumnType = ee.ColumnType
+			field.FieldType = ee.FieldType
+			fields = append(fields, field)
 			strings[ee.ColumnName] = ee.FieldName
 		}
-		repoData.EntityFields = strings
+		repoData.EntityFieldMap = strings
+		repoData.EntityFields = fields
 		data = append(data, repoData)
 	}
 	return data
 }
 
 // 构建repo模板文件的数据
-func buildRepoImports(entitys []*schema.Entity) []string {
-	return make([]string, 0, 0)
+func buildRepoImports(entitys *schema.Entity) []string {
+	imports := make([]string, 0)
+	for _, e := range entitys.EntityFields {
+		switch e.FieldType {
+		case "time.Time":
+			imports = append(imports, "time")
+		default:
+			continue
+		}
+	}
+	return imports
 }
 
 // 构建model模板文件的数据

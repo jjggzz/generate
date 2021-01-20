@@ -35,6 +35,7 @@ type CustomerRepository interface {
 	UpdateByPrimaryKey(int64, *Customer) (int64, error)
 	DeleteByPrimaryKey(int64) (int64, error)
 	SelectByPrimaryKey(int64) (*Customer, error)
+	SelectByExample(*CustomerExample) ([]*Customer, error)
 }
 
 type DemoRepository interface {
@@ -43,4 +44,5 @@ type DemoRepository interface {
 	UpdateByPrimaryKey(int32, *Demo) (int64, error)
 	DeleteByPrimaryKey(int32) (int64, error)
 	SelectByPrimaryKey(int32) (*Demo, error)
+	SelectByExample(*DemoExample) ([]*Demo, error)
 }

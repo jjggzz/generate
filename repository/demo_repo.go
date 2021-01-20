@@ -3,10 +3,18 @@ package repository
 import (
 	"database/sql"
 	"github.com/jmoiron/sqlx"
+	"strings"
 )
 
 type demoRepo struct {
 	db *sqlx.DB
+}
+
+type DemoExample struct {
+	Criteria []struct {
+		Fragment string
+		Param    interface{}
+	}
 }
 
 // execute fail return -1 and err
@@ -63,4 +71,71 @@ func (repo *demoRepo) SelectByPrimaryKey(primaryKey int32) (*Demo, error) {
 		return nil, err
 	}
 	return demo, nil
+}
+
+// execute fail return empty slice and err
+// execute success but no record return empty slice and nil
+// execute success has record return data and nil
+func (repo *demoRepo) SelectByExample(example *DemoExample) ([]*Demo, error) {
+	var list []*Demo
+	criteria := example.Criteria
+	var params []interface{}
+	var condition = ""
+	if len(criteria) > 0 {
+		var fragments []string
+		for _, e := range criteria {
+			fragments = append(fragments, e.Fragment)
+			params = append(params, e.Param)
+		}
+		condition += "where " + strings.TrimLeft(strings.Join(fragments, ""), "and")
+	}
+	return list, repo.db.Select(&list, "select id, bitType, longblobType from demo "+condition, params...)
+}
+
+func (ex *DemoExample) AndIdEqualTo(param int32) *DemoExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+	}{Fragment: "and id = ?", Param: param})
+	return ex
+}
+
+func (ex *DemoExample) AndIdNotEqualTo(param int32) *DemoExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+	}{Fragment: "and id <> ?", Param: param})
+	return ex
+}
+
+func (ex *DemoExample) AndBitTypeEqualTo(param []byte) *DemoExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+	}{Fragment: "and bitType = ?", Param: param})
+	return ex
+}
+
+func (ex *DemoExample) AndBitTypeNotEqualTo(param []byte) *DemoExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+	}{Fragment: "and bitType <> ?", Param: param})
+	return ex
+}
+
+func (ex *DemoExample) AndLongblobTypeEqualTo(param string) *DemoExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+	}{Fragment: "and longblobType = ?", Param: param})
+	return ex
+}
+
+func (ex *DemoExample) AndLongblobTypeNotEqualTo(param string) *DemoExample {
+	ex.Criteria = append(ex.Criteria, struct {
+		Fragment string
+		Param    interface{}
+	}{Fragment: "and longblobType <> ?", Param: param})
+	return ex
 }

@@ -53,8 +53,13 @@ type RepoData struct {
 	PrimaryKeyColumnName string
 	PrimaryKeyColumnType string
 	ColumnNames          []string
-	EntityFields         map[string]string
+	EntityFieldMap       map[string]string
+	EntityFields         []*RepoEntityField
 }
 
 type RepoEntityField struct {
+	FieldName  string
+	FieldType  string
+	ColumnName string
+	ColumnType string
 }
