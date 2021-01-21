@@ -1,5 +1,11 @@
 # generate
 golang mysql操作代码生成工具，采用sqlx作为操作库
+```
+# mysql驱动安装
+
+# sqlx安装
+go get github.com/jmoiron/sqlx
+```
 # windows安装
 ## 1.执行wininstall.bat
 ```
