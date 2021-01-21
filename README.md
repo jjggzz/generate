@@ -14,6 +14,7 @@ go get -u github.com/jmoiron/sqlx
     -- demo_example.go # 条件相关
     -- demo_repo.go # 仓库
 ```
+目前还剩根据条件删除和根据条件修改的方法未实现
 # windows安装
 ## 1.执行wininstall.bat
 ```
