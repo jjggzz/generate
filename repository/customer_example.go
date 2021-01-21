@@ -14,6 +14,17 @@ type CustomerExample struct {
 	}
 }
 
+func (ex *CustomerExample) Clear() *CustomerExample {
+	ex.criteria = []struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{}
+	return ex
+}
+
 func (ex *CustomerExample) AndIdIsNull() *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string

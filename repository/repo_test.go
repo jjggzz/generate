@@ -17,8 +17,19 @@ func Test_get(t *testing.T) {
 	}
 
 	repo := NewRepo(db)
-
-	list, err := repo.CustomerRepo.SelectByExample(new(CustomerExample).AndAccessKeyLike("%h"))
+	ex := new(CustomerExample).AndAccessKeyLike("ehuDIF")
+	list, err := repo.CustomerRepo.SelectByExample(ex)
+	if err != nil {
+		panic(err)
+		return
+	}
+	for _, e := range list {
+		fmt.Println(e)
+	}
+	fmt.Println("-------------------------")
+	ex.Clear()
+	ex.AndIdEqualTo(1640)
+	list, err = repo.CustomerRepo.SelectByExample(ex)
 	if err != nil {
 		panic(err)
 		return

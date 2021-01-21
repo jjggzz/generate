@@ -16,6 +16,17 @@ type {{.EntityName}}Example struct {
 	}
 }
 
+func (ex *{{$.EntityName}}Example) Clear() *{{$.EntityName}}Example {
+	ex.criteria = []struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{}
+	return ex
+}
+
 {{range .EntityFields}}
 func (ex *{{$.EntityName}}Example) And{{.FieldName}}IsNull() *{{$.EntityName}}Example {
 	ex.criteria = append(ex.criteria, struct {
