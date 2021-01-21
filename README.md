@@ -1,10 +1,18 @@
 # generate
-golang mysql操作代码生成工具，采用sqlx作为操作库
+golang mysql数据操作层代码生成工具，采用sqlx作为操作库，在项目中想使用该工具需要为你的项目安装sqlx依赖：
 ```
 # mysql驱动安装
-
+go get -u github.com/go-sql-driver/mysql
 # sqlx安装
-go get github.com/jmoiron/sqlx
+go get -u github.com/jmoiron/sqlx
+```
+生成的代码结构如下
+```
+  repository
+    -- model.go
+    -- new.go
+    -- demo_example.go
+    -- demo_repo.go
 ```
 # windows安装
 ## 1.执行wininstall.bat
