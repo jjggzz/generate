@@ -17,24 +17,11 @@ func Test_get(t *testing.T) {
 	}
 
 	repo := NewRepo(db)
-	ex := new(CustomerExample).AndAccessKeyLike("ehuDIF")
-	list, err := repo.CustomerRepo.SelectByExample(ex)
+	ex := new(CustomerExample).AndIdIn([]int64{1639, 1640})
+	count, err := repo.CustomerRepo.DeleteByExample(ex)
 	if err != nil {
 		panic(err)
 		return
 	}
-	for _, e := range list {
-		fmt.Println(e)
-	}
-	fmt.Println("-------------------------")
-	ex.Clear()
-	ex.AndIdEqualTo(1640)
-	list, err = repo.CustomerRepo.SelectByExample(ex)
-	if err != nil {
-		panic(err)
-		return
-	}
-	for _, e := range list {
-		fmt.Println(e)
-	}
+	fmt.Println(count)
 }

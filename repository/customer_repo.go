@@ -66,6 +66,36 @@ func (repo *customerRepo) SelectByPrimaryKey(primaryKey int64) (*Customer, error
 	return customer, nil
 }
 
+// execute fail return -1 and err
+// execute success return affected rows and nil
+func (repo *customerRepo) DeleteByExample(example *CustomerExample) (int64, error) {
+	criteria := example.criteria
+	var params []interface{}
+	var condition = ""
+	if len(criteria) > 0 {
+		var fragments []string
+		for _, e := range criteria {
+			fragments = append(fragments, e.fragment)
+			if !e.noValue {
+				params = append(params, e.param1)
+			}
+			if e.betweenValue {
+				params = append(params, e.param2)
+			}
+		}
+		condition += "where " + strings.TrimLeft(strings.Join(fragments, " "), "and")
+	}
+	query, args, err := sqlx.In("delete from customer "+condition, params...)
+	if err != nil {
+		return -1, err
+	}
+	result, err := repo.db.Exec(query, args...)
+	if err != nil {
+		return -1, err
+	}
+	return result.RowsAffected()
+}
+
 // execute fail return empty slice and err
 // execute success but no record return empty slice and nil
 // execute success has record return data and nil
