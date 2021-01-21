@@ -34,7 +34,8 @@ type {{.EntityName}}Repository interface {
     UpdateByPrimaryKey({{.PrimaryKeyType}},*{{.EntityName}}) (int64, error)
     DeleteByPrimaryKey({{.PrimaryKeyType}}) (int64, error)
     SelectByPrimaryKey({{.PrimaryKeyType}}) (*{{.EntityName}}, error)
-    DeleteByExample(example *{{.EntityName}}Example) (int64, error)
+    UpdateByExample(*{{.EntityName}}Example,*{{.EntityName}}) (int64, error)
+    DeleteByExample(*{{.EntityName}}Example) (int64, error)
     SelectByExample(*{{.EntityName}}Example) ([]*{{.EntityName}}, error)
 }
 {{end}}

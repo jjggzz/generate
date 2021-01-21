@@ -68,6 +68,41 @@ func (repo *demoRepo) SelectByPrimaryKey(primaryKey int32) (*Demo, error) {
 
 // execute fail return -1 and err
 // execute success return affected rows and nil
+func (repo *demoRepo) UpdateByExample(example *DemoExample, demo *Demo) (int64, error) {
+	criteria := example.criteria
+	var params []interface{}
+
+	params = append(params, demo.Id)
+	params = append(params, demo.BitType)
+	params = append(params, demo.LongblobType)
+
+	var condition = ""
+	if len(criteria) > 0 {
+		var fragments []string
+		for _, e := range criteria {
+			fragments = append(fragments, e.fragment)
+			if !e.noValue {
+				params = append(params, e.param1)
+			}
+			if e.betweenValue {
+				params = append(params, e.param2)
+			}
+		}
+		condition += "where " + strings.TrimLeft(strings.Join(fragments, " "), "and")
+	}
+	query, args, err := sqlx.In("update demo set id=?, bitType=?, longblobType=? "+condition, params...)
+	if err != nil {
+		return -1, err
+	}
+	result, err := repo.db.Exec(query, args...)
+	if err != nil {
+		return -1, err
+	}
+	return result.RowsAffected()
+}
+
+// execute fail return -1 and err
+// execute success return affected rows and nil
 func (repo *demoRepo) DeleteByExample(example *DemoExample) (int64, error) {
 	criteria := example.criteria
 	var params []interface{}

@@ -17,8 +17,10 @@ func Test_get(t *testing.T) {
 	}
 
 	repo := NewRepo(db)
-	ex := new(CustomerExample).AndIdIn([]int64{1639, 1640})
-	count, err := repo.CustomerRepo.DeleteByExample(ex)
+	ex := new(CustomerExample).AndIdEqualTo(1641)
+	cus, err := repo.CustomerRepo.SelectByPrimaryKey(1641)
+	cus.Phone = "11111111111"
+	count, err := repo.CustomerRepo.UpdateByExample(ex, cus)
 	if err != nil {
 		panic(err)
 		return

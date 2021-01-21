@@ -68,6 +68,49 @@ func (repo *customerRepo) SelectByPrimaryKey(primaryKey int64) (*Customer, error
 
 // execute fail return -1 and err
 // execute success return affected rows and nil
+func (repo *customerRepo) UpdateByExample(example *CustomerExample, customer *Customer) (int64, error) {
+	criteria := example.criteria
+	var params []interface{}
+
+	params = append(params, customer.Id)
+	params = append(params, customer.AccessKey)
+	params = append(params, customer.CreateTime)
+	params = append(params, customer.UpdateTime)
+	params = append(params, customer.DeleteStatus)
+	params = append(params, customer.Phone)
+	params = append(params, customer.Username)
+	params = append(params, customer.Password)
+	params = append(params, customer.Email)
+	params = append(params, customer.Nickname)
+	params = append(params, customer.Status)
+
+	var condition = ""
+	if len(criteria) > 0 {
+		var fragments []string
+		for _, e := range criteria {
+			fragments = append(fragments, e.fragment)
+			if !e.noValue {
+				params = append(params, e.param1)
+			}
+			if e.betweenValue {
+				params = append(params, e.param2)
+			}
+		}
+		condition += "where " + strings.TrimLeft(strings.Join(fragments, " "), "and")
+	}
+	query, args, err := sqlx.In("update customer set id=?, access_key=?, create_time=?, update_time=?, delete_status=?, phone=?, username=?, password=?, email=?, nickname=?, status=? "+condition, params...)
+	if err != nil {
+		return -1, err
+	}
+	result, err := repo.db.Exec(query, args...)
+	if err != nil {
+		return -1, err
+	}
+	return result.RowsAffected()
+}
+
+// execute fail return -1 and err
+// execute success return affected rows and nil
 func (repo *customerRepo) DeleteByExample(example *CustomerExample) (int64, error) {
 	criteria := example.criteria
 	var params []interface{}
