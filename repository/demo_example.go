@@ -404,3 +404,24 @@ func (ex *DemoExample) AndLongblobTypeNotBetween(param1 string, param2 string) *
 	}{fragment: "and longblobType not between ? and ?", param1: param1, param2: param2, betweenValue: true})
 	return ex
 }
+
+func (ex *DemoExample) AndLongblobTypeLike(param string) *DemoExample {
+	ex.criteria = append(ex.criteria, struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{fragment: "and longblobType like ?", param1: param})
+	return ex
+}
+func (ex *DemoExample) AndLongblobTypeNotLike(param string) *DemoExample {
+	ex.criteria = append(ex.criteria, struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{fragment: "and longblobType not like ?", param1: param})
+	return ex
+}

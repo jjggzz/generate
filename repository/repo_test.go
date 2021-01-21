@@ -18,7 +18,7 @@ func Test_get(t *testing.T) {
 
 	repo := NewRepo(db)
 
-	list, err := repo.CustomerRepo.SelectByExample(new(CustomerExample).AndAccessKeyIn([]string{"ehuDIF", "oRtpuc"}).AndIdNotBetween(1638, 1639))
+	list, err := repo.CustomerRepo.SelectByExample(new(CustomerExample).AndAccessKeyLike("%h"))
 	if err != nil {
 		panic(err)
 		return

@@ -276,6 +276,27 @@ func (ex *CustomerExample) AndAccessKeyNotBetween(param1 string, param2 string) 
 	return ex
 }
 
+func (ex *CustomerExample) AndAccessKeyLike(param string) *CustomerExample {
+	ex.criteria = append(ex.criteria, struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{fragment: "and access_key like ?", param1: param})
+	return ex
+}
+func (ex *CustomerExample) AndAccessKeyNotLike(param string) *CustomerExample {
+	ex.criteria = append(ex.criteria, struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{fragment: "and access_key not like ?", param1: param})
+	return ex
+}
+
 func (ex *CustomerExample) AndCreateTimeIsNull() *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
@@ -800,6 +821,27 @@ func (ex *CustomerExample) AndPhoneNotBetween(param1 string, param2 string) *Cus
 	return ex
 }
 
+func (ex *CustomerExample) AndPhoneLike(param string) *CustomerExample {
+	ex.criteria = append(ex.criteria, struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{fragment: "and phone like ?", param1: param})
+	return ex
+}
+func (ex *CustomerExample) AndPhoneNotLike(param string) *CustomerExample {
+	ex.criteria = append(ex.criteria, struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{fragment: "and phone not like ?", param1: param})
+	return ex
+}
+
 func (ex *CustomerExample) AndUsernameIsNull() *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
@@ -928,6 +970,27 @@ func (ex *CustomerExample) AndUsernameNotBetween(param1 string, param2 string) *
 		noValue      bool
 		betweenValue bool
 	}{fragment: "and username not between ? and ?", param1: param1, param2: param2, betweenValue: true})
+	return ex
+}
+
+func (ex *CustomerExample) AndUsernameLike(param string) *CustomerExample {
+	ex.criteria = append(ex.criteria, struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{fragment: "and username like ?", param1: param})
+	return ex
+}
+func (ex *CustomerExample) AndUsernameNotLike(param string) *CustomerExample {
+	ex.criteria = append(ex.criteria, struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{fragment: "and username not like ?", param1: param})
 	return ex
 }
 
@@ -1062,6 +1125,27 @@ func (ex *CustomerExample) AndPasswordNotBetween(param1 string, param2 string) *
 	return ex
 }
 
+func (ex *CustomerExample) AndPasswordLike(param string) *CustomerExample {
+	ex.criteria = append(ex.criteria, struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{fragment: "and password like ?", param1: param})
+	return ex
+}
+func (ex *CustomerExample) AndPasswordNotLike(param string) *CustomerExample {
+	ex.criteria = append(ex.criteria, struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{fragment: "and password not like ?", param1: param})
+	return ex
+}
+
 func (ex *CustomerExample) AndEmailIsNull() *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
@@ -1193,6 +1277,27 @@ func (ex *CustomerExample) AndEmailNotBetween(param1 string, param2 string) *Cus
 	return ex
 }
 
+func (ex *CustomerExample) AndEmailLike(param string) *CustomerExample {
+	ex.criteria = append(ex.criteria, struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{fragment: "and email like ?", param1: param})
+	return ex
+}
+func (ex *CustomerExample) AndEmailNotLike(param string) *CustomerExample {
+	ex.criteria = append(ex.criteria, struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{fragment: "and email not like ?", param1: param})
+	return ex
+}
+
 func (ex *CustomerExample) AndNicknameIsNull() *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
@@ -1321,6 +1426,27 @@ func (ex *CustomerExample) AndNicknameNotBetween(param1 string, param2 string) *
 		noValue      bool
 		betweenValue bool
 	}{fragment: "and nickname not between ? and ?", param1: param1, param2: param2, betweenValue: true})
+	return ex
+}
+
+func (ex *CustomerExample) AndNicknameLike(param string) *CustomerExample {
+	ex.criteria = append(ex.criteria, struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{fragment: "and nickname like ?", param1: param})
+	return ex
+}
+func (ex *CustomerExample) AndNicknameNotLike(param string) *CustomerExample {
+	ex.criteria = append(ex.criteria, struct {
+		fragment     string
+		param1       interface{}
+		param2       interface{}
+		noValue      bool
+		betweenValue bool
+	}{fragment: "and nickname not like ?", param1: param})
 	return ex
 }
 
