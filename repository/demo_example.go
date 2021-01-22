@@ -176,7 +176,7 @@ func (ex *DemoExample) AndBitTypeIsNotNull() *DemoExample {
 	return ex
 }
 
-func (ex *DemoExample) AndBitTypeEqualTo(param []byte) *DemoExample {
+func (ex *DemoExample) AndBitTypeEqualTo(param int8) *DemoExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -187,7 +187,7 @@ func (ex *DemoExample) AndBitTypeEqualTo(param []byte) *DemoExample {
 	return ex
 }
 
-func (ex *DemoExample) AndBitTypeNotEqualTo(param []byte) *DemoExample {
+func (ex *DemoExample) AndBitTypeNotEqualTo(param int8) *DemoExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -198,7 +198,7 @@ func (ex *DemoExample) AndBitTypeNotEqualTo(param []byte) *DemoExample {
 	return ex
 }
 
-func (ex *DemoExample) AndBitTypeGreaterThan(param []byte) *DemoExample {
+func (ex *DemoExample) AndBitTypeGreaterThan(param int8) *DemoExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -209,7 +209,7 @@ func (ex *DemoExample) AndBitTypeGreaterThan(param []byte) *DemoExample {
 	return ex
 }
 
-func (ex *DemoExample) AndBitTypeGreaterThanOrEqualTo(param []byte) *DemoExample {
+func (ex *DemoExample) AndBitTypeGreaterThanOrEqualTo(param int8) *DemoExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -219,7 +219,7 @@ func (ex *DemoExample) AndBitTypeGreaterThanOrEqualTo(param []byte) *DemoExample
 	}{fragment: "and bitType >= ?", param1: param})
 	return ex
 }
-func (ex *DemoExample) AndBitTypeLessThan(param []byte) *DemoExample {
+func (ex *DemoExample) AndBitTypeLessThan(param int8) *DemoExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -230,7 +230,7 @@ func (ex *DemoExample) AndBitTypeLessThan(param []byte) *DemoExample {
 	return ex
 }
 
-func (ex *DemoExample) AndBitTypeLessThanOrEqualTo(param []byte) *DemoExample {
+func (ex *DemoExample) AndBitTypeLessThanOrEqualTo(param int8) *DemoExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -241,7 +241,7 @@ func (ex *DemoExample) AndBitTypeLessThanOrEqualTo(param []byte) *DemoExample {
 	return ex
 }
 
-func (ex *DemoExample) AndBitTypeIn(param [][]byte) *DemoExample {
+func (ex *DemoExample) AndBitTypeIn(param []int8) *DemoExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -252,7 +252,7 @@ func (ex *DemoExample) AndBitTypeIn(param [][]byte) *DemoExample {
 	return ex
 }
 
-func (ex *DemoExample) AndBitTypeNotIn(param [][]byte) *DemoExample {
+func (ex *DemoExample) AndBitTypeNotIn(param []int8) *DemoExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -263,7 +263,7 @@ func (ex *DemoExample) AndBitTypeNotIn(param [][]byte) *DemoExample {
 	return ex
 }
 
-func (ex *DemoExample) AndBitTypeBetween(param1 []byte, param2 []byte) *DemoExample {
+func (ex *DemoExample) AndBitTypeBetween(param1 int8, param2 int8) *DemoExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -274,7 +274,7 @@ func (ex *DemoExample) AndBitTypeBetween(param1 []byte, param2 []byte) *DemoExam
 	return ex
 }
 
-func (ex *DemoExample) AndBitTypeNotBetween(param1 []byte, param2 []byte) *DemoExample {
+func (ex *DemoExample) AndBitTypeNotBetween(param1 int8, param2 int8) *DemoExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}

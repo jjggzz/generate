@@ -98,7 +98,7 @@ func conversionColumnTypeToEntityType(columnType string) string {
 	case "bit":
 		return "[]byte"
 	case "tinyint":
-		return "bool"
+		return "int8"
 	case "smallint":
 		return "int16"
 	case "int", "integer":

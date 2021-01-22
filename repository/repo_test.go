@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func Test_get(t *testing.T) {
+func Test_db(t *testing.T) {
 	dns := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local", "root", "123456", "localhost:3306", "customer")
 	db, err := sqlx.Open("mysql", dns)
 	if err != nil {
@@ -17,13 +17,10 @@ func Test_get(t *testing.T) {
 	}
 
 	repo := NewRepo(db)
-	ex := new(CustomerExample).AndIdEqualTo(1641)
-	cus, err := repo.CustomerRepo.SelectByPrimaryKey(1641)
-	cus.Phone = "11111111111"
-	count, err := repo.CustomerRepo.UpdateByExample(ex, cus)
+	cus, err := repo.DemoRepo.SelectByPrimaryKey(1)
 	if err != nil {
 		panic(err)
 		return
 	}
-	fmt.Println(count)
+	fmt.Println(cus)
 }
