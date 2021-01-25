@@ -7,24 +7,16 @@ import (
 
 type Repository struct {
 	CustomerRepo CustomerRepository
-	DemoRepo     DemoRepository
 }
 
 func NewRepo(db *sqlx.DB) Repository {
 	return Repository{
 		CustomerRepo: NewCustomerRepo(db),
-		DemoRepo:     NewDemoRepo(db),
 	}
 }
 
 func NewCustomerRepo(db *sqlx.DB) CustomerRepository {
 	return &customerRepo{
-		db: db,
-	}
-}
-
-func NewDemoRepo(db *sqlx.DB) DemoRepository {
-	return &demoRepo{
 		db: db,
 	}
 }
@@ -38,15 +30,4 @@ type CustomerRepository interface {
 	UpdateByExample(*CustomerExample, *Customer) (int64, error)
 	DeleteByExample(*CustomerExample) (int64, error)
 	SelectByExample(*CustomerExample) ([]*Customer, error)
-}
-
-type DemoRepository interface {
-	Count() (int64, error)
-	Insert(*Demo) (int64, error)
-	UpdateByPrimaryKey(int32, *Demo) (int64, error)
-	DeleteByPrimaryKey(int32) (int64, error)
-	SelectByPrimaryKey(int32) (*Demo, error)
-	UpdateByExample(*DemoExample, *Demo) (int64, error)
-	DeleteByExample(*DemoExample) (int64, error)
-	SelectByExample(*DemoExample) ([]*Demo, error)
 }

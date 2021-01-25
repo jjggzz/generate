@@ -17,10 +17,10 @@ func Test_db(t *testing.T) {
 	}
 
 	repo := NewRepo(db)
-	cus, err := repo.DemoRepo.SelectByPrimaryKey(1)
+	customer, err := repo.CustomerRepo.SelectByPrimaryKey(1)
 	if err != nil {
 		panic(err)
 		return
 	}
-	fmt.Println(cus)
+	fmt.Println(customer)
 }
