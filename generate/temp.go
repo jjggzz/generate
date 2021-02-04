@@ -57,7 +57,7 @@ func buildRepoImports(entitys *schema.Entity) []string {
 	imports := make([]string, 0)
 	for _, e := range entitys.EntityFields {
 		switch e.FieldType {
-		case "time.Time":
+		case "*time.Time":
 			imports = append(imports, "time")
 		default:
 			continue
@@ -72,7 +72,7 @@ func buildModelImports(entitys []*schema.Entity) []string {
 	for _, e := range entitys {
 		for _, ee := range e.EntityFields {
 			switch ee.FieldType {
-			case "time.Time":
+			case "*time.Time":
 				imports = append(imports, "time")
 			default:
 				continue

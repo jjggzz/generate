@@ -112,7 +112,7 @@ func conversionColumnTypeToEntityType(columnType string) string {
 	case "char", "varchar", "tinyblob", "tinytext", "mediumblob", "mediumtext", "longblob", "longtext":
 		return "string"
 	case "date", "datetime":
-		return "time.Time"
+		return "*time.Time"
 	default:
 		return "interface{}"
 	}

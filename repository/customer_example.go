@@ -331,7 +331,7 @@ func (ex *CustomerExample) AndCreateTimeIsNotNull() *CustomerExample {
 	return ex
 }
 
-func (ex *CustomerExample) AndCreateTimeEqualTo(param time.Time) *CustomerExample {
+func (ex *CustomerExample) AndCreateTimeEqualTo(param *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -342,7 +342,7 @@ func (ex *CustomerExample) AndCreateTimeEqualTo(param time.Time) *CustomerExampl
 	return ex
 }
 
-func (ex *CustomerExample) AndCreateTimeNotEqualTo(param time.Time) *CustomerExample {
+func (ex *CustomerExample) AndCreateTimeNotEqualTo(param *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -353,7 +353,7 @@ func (ex *CustomerExample) AndCreateTimeNotEqualTo(param time.Time) *CustomerExa
 	return ex
 }
 
-func (ex *CustomerExample) AndCreateTimeGreaterThan(param time.Time) *CustomerExample {
+func (ex *CustomerExample) AndCreateTimeGreaterThan(param *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -364,7 +364,7 @@ func (ex *CustomerExample) AndCreateTimeGreaterThan(param time.Time) *CustomerEx
 	return ex
 }
 
-func (ex *CustomerExample) AndCreateTimeGreaterThanOrEqualTo(param time.Time) *CustomerExample {
+func (ex *CustomerExample) AndCreateTimeGreaterThanOrEqualTo(param *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -374,7 +374,7 @@ func (ex *CustomerExample) AndCreateTimeGreaterThanOrEqualTo(param time.Time) *C
 	}{fragment: "and create_time >= ?", param1: param})
 	return ex
 }
-func (ex *CustomerExample) AndCreateTimeLessThan(param time.Time) *CustomerExample {
+func (ex *CustomerExample) AndCreateTimeLessThan(param *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -385,7 +385,7 @@ func (ex *CustomerExample) AndCreateTimeLessThan(param time.Time) *CustomerExamp
 	return ex
 }
 
-func (ex *CustomerExample) AndCreateTimeLessThanOrEqualTo(param time.Time) *CustomerExample {
+func (ex *CustomerExample) AndCreateTimeLessThanOrEqualTo(param *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -396,7 +396,7 @@ func (ex *CustomerExample) AndCreateTimeLessThanOrEqualTo(param time.Time) *Cust
 	return ex
 }
 
-func (ex *CustomerExample) AndCreateTimeIn(param []time.Time) *CustomerExample {
+func (ex *CustomerExample) AndCreateTimeIn(param []*time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -407,7 +407,7 @@ func (ex *CustomerExample) AndCreateTimeIn(param []time.Time) *CustomerExample {
 	return ex
 }
 
-func (ex *CustomerExample) AndCreateTimeNotIn(param []time.Time) *CustomerExample {
+func (ex *CustomerExample) AndCreateTimeNotIn(param []*time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -418,7 +418,7 @@ func (ex *CustomerExample) AndCreateTimeNotIn(param []time.Time) *CustomerExampl
 	return ex
 }
 
-func (ex *CustomerExample) AndCreateTimeBetween(param1 time.Time, param2 time.Time) *CustomerExample {
+func (ex *CustomerExample) AndCreateTimeBetween(param1 *time.Time, param2 *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -429,7 +429,7 @@ func (ex *CustomerExample) AndCreateTimeBetween(param1 time.Time, param2 time.Ti
 	return ex
 }
 
-func (ex *CustomerExample) AndCreateTimeNotBetween(param1 time.Time, param2 time.Time) *CustomerExample {
+func (ex *CustomerExample) AndCreateTimeNotBetween(param1 *time.Time, param2 *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -462,7 +462,7 @@ func (ex *CustomerExample) AndUpdateTimeIsNotNull() *CustomerExample {
 	return ex
 }
 
-func (ex *CustomerExample) AndUpdateTimeEqualTo(param time.Time) *CustomerExample {
+func (ex *CustomerExample) AndUpdateTimeEqualTo(param *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -473,7 +473,7 @@ func (ex *CustomerExample) AndUpdateTimeEqualTo(param time.Time) *CustomerExampl
 	return ex
 }
 
-func (ex *CustomerExample) AndUpdateTimeNotEqualTo(param time.Time) *CustomerExample {
+func (ex *CustomerExample) AndUpdateTimeNotEqualTo(param *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -484,7 +484,7 @@ func (ex *CustomerExample) AndUpdateTimeNotEqualTo(param time.Time) *CustomerExa
 	return ex
 }
 
-func (ex *CustomerExample) AndUpdateTimeGreaterThan(param time.Time) *CustomerExample {
+func (ex *CustomerExample) AndUpdateTimeGreaterThan(param *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -495,7 +495,7 @@ func (ex *CustomerExample) AndUpdateTimeGreaterThan(param time.Time) *CustomerEx
 	return ex
 }
 
-func (ex *CustomerExample) AndUpdateTimeGreaterThanOrEqualTo(param time.Time) *CustomerExample {
+func (ex *CustomerExample) AndUpdateTimeGreaterThanOrEqualTo(param *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -505,7 +505,7 @@ func (ex *CustomerExample) AndUpdateTimeGreaterThanOrEqualTo(param time.Time) *C
 	}{fragment: "and update_time >= ?", param1: param})
 	return ex
 }
-func (ex *CustomerExample) AndUpdateTimeLessThan(param time.Time) *CustomerExample {
+func (ex *CustomerExample) AndUpdateTimeLessThan(param *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -516,7 +516,7 @@ func (ex *CustomerExample) AndUpdateTimeLessThan(param time.Time) *CustomerExamp
 	return ex
 }
 
-func (ex *CustomerExample) AndUpdateTimeLessThanOrEqualTo(param time.Time) *CustomerExample {
+func (ex *CustomerExample) AndUpdateTimeLessThanOrEqualTo(param *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -527,7 +527,7 @@ func (ex *CustomerExample) AndUpdateTimeLessThanOrEqualTo(param time.Time) *Cust
 	return ex
 }
 
-func (ex *CustomerExample) AndUpdateTimeIn(param []time.Time) *CustomerExample {
+func (ex *CustomerExample) AndUpdateTimeIn(param []*time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -538,7 +538,7 @@ func (ex *CustomerExample) AndUpdateTimeIn(param []time.Time) *CustomerExample {
 	return ex
 }
 
-func (ex *CustomerExample) AndUpdateTimeNotIn(param []time.Time) *CustomerExample {
+func (ex *CustomerExample) AndUpdateTimeNotIn(param []*time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -549,7 +549,7 @@ func (ex *CustomerExample) AndUpdateTimeNotIn(param []time.Time) *CustomerExampl
 	return ex
 }
 
-func (ex *CustomerExample) AndUpdateTimeBetween(param1 time.Time, param2 time.Time) *CustomerExample {
+func (ex *CustomerExample) AndUpdateTimeBetween(param1 *time.Time, param2 *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
@@ -560,7 +560,7 @@ func (ex *CustomerExample) AndUpdateTimeBetween(param1 time.Time, param2 time.Ti
 	return ex
 }
 
-func (ex *CustomerExample) AndUpdateTimeNotBetween(param1 time.Time, param2 time.Time) *CustomerExample {
+func (ex *CustomerExample) AndUpdateTimeNotBetween(param1 *time.Time, param2 *time.Time) *CustomerExample {
 	ex.criteria = append(ex.criteria, struct {
 		fragment     string
 		param1       interface{}
