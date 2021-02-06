@@ -45,6 +45,7 @@ go get -u github.com/jmoiron/sqlx
 # linux安装
 ## 1.执行linuxinstall.sh
 ```
+  > chmod 777 linuxinstall.sh
   > ./linuxinstall.sh
 ```
 会在%GOPATH%/go/bin目录下生成sqlxgen
