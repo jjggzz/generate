@@ -294,9 +294,9 @@ type bintree struct {
 
 var _bintree = &bintree{nil, map[string]*bintree{
 	"example.gotemplate": {exampleGotemplate, map[string]*bintree{}},
-	"model.gotemplate":   {modelGotemplate, map[string]*bintree{}},
-	"new.gotemplate":     {newGotemplate, map[string]*bintree{}},
-	"repo.gotemplate":    {repoGotemplate, map[string]*bintree{}},
+	"model.gotemplate": {modelGotemplate, map[string]*bintree{}},
+	"new.gotemplate": {newGotemplate, map[string]*bintree{}},
+	"repo.gotemplate": {repoGotemplate, map[string]*bintree{}},
 }}
 
 // RestoreAsset restores an asset under the given directory.

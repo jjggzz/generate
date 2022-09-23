@@ -5,13 +5,14 @@ package generate
 import (
 	"bytes"
 	"fmt"
-	"github.com/jjggzz/generate/schema"
-	"github.com/jjggzz/generate/temp"
 	"go/format"
 	"os"
 	"path"
 	"strings"
 	"text/template"
+
+	"github.com/jjggzz/generate/schema"
+	"github.com/jjggzz/generate/temp"
 )
 
 func Generate(basePath string, data *Data) {

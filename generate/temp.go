@@ -58,7 +58,9 @@ func buildRepoImports(entitys *schema.Entity) []string {
 	for _, e := range entitys.EntityFields {
 		switch e.FieldType {
 		case "*time.Time":
-			imports = append(imports, "time")
+			if !inStringSilce(imports, "time") {
+				imports = append(imports, "time")
+			}
 		default:
 			continue
 		}
@@ -73,7 +75,9 @@ func buildModelImports(entitys []*schema.Entity) []string {
 		for _, ee := range e.EntityFields {
 			switch ee.FieldType {
 			case "*time.Time":
-				imports = append(imports, "time")
+				if !inStringSilce(imports, "time") {
+					imports = append(imports, "time")
+				}
 			default:
 				continue
 			}
@@ -117,4 +121,13 @@ func buildNewEntitys(entitys []*schema.Entity) []*NewEntity {
 		entities = append(entities, entity)
 	}
 	return entities
+}
+
+func inStringSilce(silce []string, str string) bool {
+	for _, v := range silce {
+		if v == str {
+			return true
+		}
+	}
+	return false
 }

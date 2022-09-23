@@ -6,9 +6,11 @@ package schema
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"io"
 	"log"
+	"strings"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type Table struct {
@@ -72,17 +74,24 @@ func CloseResource(closer io.Closer) {
 }
 
 const getTableSql = "SELECT TB.TABLE_NAME,TB.TABLE_COMMENT FROM INFORMATION_SCHEMA.TABLES TB Where TB.TABLE_SCHEMA = ?"
-const getFieldSql = "SELECT COL.COLUMN_NAME,COL.COLUMN_TYPE,COL.COLUMN_KEY,COL.COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS COL Where COL.TABLE_NAME = ?"
+const getFieldSql = "SELECT COL.COLUMN_NAME,COL.COLUMN_TYPE,COL.COLUMN_KEY,COL.COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS COL Where COL.TABLE_SCHEMA = ? and COL.TABLE_NAME = ?"
 
 // 加载表结构
 // schema: 数据库名
-func Load(schema string) ([]*Table, error) {
-	tables, err := getTables(schema)
+func Load(schema string, tableName string) ([]*Table, error) {
+	var tables []*Table
+	var err error
+	if tableName == "" {
+		tables, err = getTables(schema)
+	} else {
+		tableNameList := strings.Split(tableName, ",")
+		tables, err = getTablesFilterTableName(schema, tableNameList)
+	}
 	if err != nil {
 		return nil, err
 	}
 	for _, e := range tables {
-		fields, err := getField(e.TableName)
+		fields, err := getField(schema, e.TableName)
 		if err == nil {
 			e.TableFields = fields
 		}
@@ -96,6 +105,7 @@ func getTables(schema string) ([]*Table, error) {
 		panic(fmt.Sprintf("query tables err: %s", err.Error()))
 	}
 	defer CloseResource(rows)
+
 	tables := make([]*Table, 0, 10)
 	for rows.Next() {
 		table := new(Table)
@@ -109,8 +119,34 @@ func getTables(schema string) ([]*Table, error) {
 	return tables, nil
 }
 
-func getField(table string) ([]*TableField, error) {
-	rows, err := db.Query(getFieldSql, table)
+func getTablesFilterTableName(schema string, tableName []string) ([]*Table, error) {
+	rows, err := db.Query(getTableSql, schema)
+	if err != nil {
+		panic(fmt.Sprintf("query tables err: %s", err.Error()))
+	}
+	defer CloseResource(rows)
+
+	fm := make(map[string]int)
+	for i, v := range tableName {
+		fm[v] = i
+	}
+	tables := make([]*Table, 0, 10)
+	for rows.Next() {
+		table := new(Table)
+		err := rows.Scan(&table.TableName, &table.TableComment)
+		if err != nil {
+			log.Printf("query tables err: %s", err.Error())
+		} else {
+			if _, ok := fm[table.TableName]; ok {
+				tables = append(tables, table)
+			}
+		}
+	}
+	return tables, nil
+}
+
+func getField(schema string, table string) ([]*TableField, error) {
+	rows, err := db.Query(getFieldSql, schema, table)
 	if err != nil {
 		panic(fmt.Sprintf("query field err: %s", err.Error()))
 	}
@@ -118,6 +154,7 @@ func getField(table string) ([]*TableField, error) {
 	fields := make([]*TableField, 0, 10)
 	for rows.Next() {
 		field := new(TableField)
+		rows.Scan()
 		err := rows.Scan(&field.ColumnName, &field.ColumnType, &field.ColumnKey, &field.ColumnComment)
 		if err != nil {
 			log.Printf("query field err: %s", err.Error())
