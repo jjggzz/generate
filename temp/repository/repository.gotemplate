@@ -22,12 +22,13 @@ func New{{.EntityName}}Repo(db *sqlx.DB) {{.EntityName}}Repository {
 type {{.EntityName}}Repository interface {
     Count() (int64, error)
     Insert(*{{.EntityName}}) (int64, error)
-    UpdateByPrimaryKey({{.PrimaryKeyType}},*{{.EntityName}}) (int64, error)
-    DeleteByPrimaryKey({{.PrimaryKeyType}}) (int64, error)
-    SelectByPrimaryKey({{.PrimaryKeyType}}) (*{{.EntityName}}, error)
     UpdateByExample(*{{.EntityName}}Example,*{{.EntityName}}) (int64, error)
     DeleteByExample(*{{.EntityName}}Example) (int64, error)
-    SelectByExample(*{{.EntityName}}Example) ([]*{{.EntityName}}, error)
+    SelectByExample(*{{.EntityName}}Example) ([]*{{.EntityName}}, error){{if and (ne .PrimaryKeyType "") (ne .PrimaryKeyName "") }}
+	UpdateByPrimaryKey({{.PrimaryKeyType}},*{{.EntityName}}) (int64, error)
+    DeleteByPrimaryKey({{.PrimaryKeyType}}) (int64, error)
+    SelectByPrimaryKey({{.PrimaryKeyType}}) (*{{.EntityName}}, error)
+	{{end}}
 }
 
 type {{StrFirstLetterToLowercase .EntityName}}Repo struct {
@@ -55,6 +56,7 @@ func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) Insert({{StrFirstLett
 	return result.RowsAffected()
 }
 
+{{if and (ne .PrimaryKeyType "") (ne .PrimaryKeyName "") }}
 // execute fail return -1 and err
 // execute success return affected rows and nil
 func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) UpdateByPrimaryKey(primaryKey {{.PrimaryKeyType}},{{StrFirstLetterToLowercase .EntityName}} *{{.EntityName}}) (int64, error) {
@@ -89,6 +91,7 @@ func (repo *{{StrFirstLetterToLowercase .EntityName}}Repo) SelectByPrimaryKey(pr
     }
     return {{StrFirstLetterToLowercase .EntityName}}, nil
 }
+{{end}}
 
 // execute fail return -1 and err
 // execute success return affected rows and nil
