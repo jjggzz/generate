@@ -42,7 +42,7 @@ func conversionTable(table *Table) *Entity {
 func conversionField(field *TableField) *EntityField {
 	entityField := new(EntityField)
 	entityField.FieldName = UnderlineToUpCamel(field.ColumnName)
-	entityField.FieldType = conversionColumnTypeToEntityType(field.ColumnType)
+	entityField.FieldType = conversionColumnTypeToEntityType(field.ColumnType, field.IsNullable == "YES")
 	entityField.ColumnName = field.ColumnName
 	entityField.ColumnType = field.ColumnType
 	entityField.ColumnKey = field.ColumnKey
@@ -92,28 +92,34 @@ func UnderlineToUpCamel(str string) string {
 	return strings.Join(split, "")
 }
 
-func conversionColumnTypeToEntityType(columnType string) string {
+func conversionColumnTypeToEntityType(columnType string, isNullable bool) string {
 	split := strings.Split(columnType, "(")
 	switch strings.ToLower(split[0]) {
 	case "bit":
-		return "[]byte"
+		return simpleIF(isNullable, "sql.NullBool", "bool").(string)
 	case "tinyint":
-		return "int8"
+		return simpleIF(isNullable, "sql.NullByte", "byte").(string)
 	case "smallint":
-		return "int16"
+		return simpleIF(isNullable, "sql.NullInt16", "int16").(string)
 	case "int", "integer":
-		return "int32"
+		return simpleIF(isNullable, "sql.NullInt32", "int32").(string)
 	case "bigint":
-		return "int64"
-	case "float":
-		return "float32"
-	case "double", "decimal":
-		return "float64"
+		return simpleIF(isNullable, "sql.NullInt64", "int64").(string)
+	case "float", "double", "decimal":
+		return simpleIF(isNullable, "sql.NullFloat64", "float64").(string)
 	case "char", "varchar", "tinyblob", "tinytext", "mediumblob", "mediumtext", "longblob", "longtext":
-		return "string"
-	case "date", "datetime":
-		return "*time.Time"
+		return simpleIF(isNullable, "sql.NullString", "string").(string)
+	case "date", "datetime", "timestamp":
+		return simpleIF(isNullable, "sql.NullTime", "time.Time").(string)
 	default:
 		return "interface{}"
+	}
+}
+
+func simpleIF(condition bool, value1 any, value2 any) any {
+	if condition {
+		return value1
+	} else {
+		return value2
 	}
 }

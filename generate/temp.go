@@ -53,7 +53,7 @@ func buildRepoImports(entitys *schema.Entity) []string {
 	imports = append(imports, "\"strings\"")
 	for _, e := range entitys.EntityFields {
 		switch e.FieldType {
-		case "*time.Time":
+		case "time.Time":
 			if !inStringSilce(imports, "\"time\"") {
 				imports = append(imports, "\"time\"")
 			}

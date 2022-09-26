@@ -23,6 +23,7 @@ type TableField struct {
 	ColumnName    string
 	ColumnKey     string
 	ColumnType    string
+	IsNullable    string
 	ColumnComment string
 }
 
@@ -74,7 +75,7 @@ func CloseResource(closer io.Closer) {
 }
 
 const getTableSql = "SELECT TB.TABLE_NAME,TB.TABLE_COMMENT FROM INFORMATION_SCHEMA.TABLES TB Where TB.TABLE_SCHEMA = ?"
-const getFieldSql = "SELECT COL.COLUMN_NAME,COL.COLUMN_TYPE,COL.COLUMN_KEY,COL.COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS COL Where COL.TABLE_SCHEMA = ? and COL.TABLE_NAME = ?"
+const getFieldSql = "SELECT COL.COLUMN_NAME,COL.COLUMN_TYPE,COL.COLUMN_KEY,COL.IS_NULLABLE,COL.COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS COL Where COL.TABLE_SCHEMA = ? and COL.TABLE_NAME = ?"
 
 // 加载表结构
 // schema: 数据库名
@@ -155,7 +156,7 @@ func getField(schema string, table string) ([]*TableField, error) {
 	for rows.Next() {
 		field := new(TableField)
 		rows.Scan()
-		err := rows.Scan(&field.ColumnName, &field.ColumnType, &field.ColumnKey, &field.ColumnComment)
+		err := rows.Scan(&field.ColumnName, &field.ColumnType, &field.ColumnKey, &field.IsNullable, &field.ColumnComment)
 		if err != nil {
 			log.Printf("query field err: %s", err.Error())
 		} else {
