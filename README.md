@@ -9,10 +9,7 @@ go get -u github.com/jmoiron/sqlx
 生成的代码结构如下
 ```
   repository
-    -- model.go # 数据库中所有表所映射的实体
-    -- new.go # 创建库相关代码
-    -- demo_example.go # 条件相关
-    -- demo_repo.go # 仓库
+    -- demo_repository.go # 仓库
 ```
 # windows安装
 ## 1.执行wininstall.bat
@@ -41,6 +38,8 @@ go get -u github.com/jmoiron/sqlx
         db server port (default 3306)
   -u string
         db server username
+  -table string
+        if not specified generate all
 ```
 # linux安装
 ## 1.执行linuxinstall.sh
@@ -69,6 +68,8 @@ go get -u github.com/jmoiron/sqlx
         db server port (default 3306)
   -u string
         db server username
+  -table string
+        if not specified generate all
 ```
 # 使用
 在你的项目路径下执行
