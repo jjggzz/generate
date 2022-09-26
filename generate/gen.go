@@ -31,56 +31,8 @@ func Generate(basePath string, data *Data) {
 	}
 	names := temp.AssetNames()
 	for _, name := range names {
-
 		switch name {
-		case "model.gotemplate":
-			tempText := temp.MustAssetString(name)
-			tmp := template.New(name).Funcs(maps)
-			parse, err := tmp.Parse(tempText)
-			if err != nil {
-				panic(fmt.Sprintf("template parse err: %s", err.Error()))
-			}
-			buffer := bytes.NewBuffer(nil)
-			err = parse.Execute(buffer, data.Mode)
-			source, err := format.Source(buffer.Bytes())
-			split := strings.Split(name, ".")
-			err = writeFile(path.Join(basePath, split[0]+".go"), source)
-			if err != nil {
-				panic(fmt.Sprintf("write file err: %s", err.Error()))
-			}
-		case "new.gotemplate":
-			tempText := temp.MustAssetString(name)
-			tmp := template.New(name).Funcs(maps)
-			parse, err := tmp.Parse(tempText)
-			if err != nil {
-				panic(fmt.Sprintf("template parse err: %s", err.Error()))
-			}
-			buffer := bytes.NewBuffer(nil)
-			err = parse.Execute(buffer, data.New)
-			source, err := format.Source(buffer.Bytes())
-			split := strings.Split(name, ".")
-			err = writeFile(path.Join(basePath, split[0]+".go"), source)
-			if err != nil {
-				panic(fmt.Sprintf("write file err: %s", err.Error()))
-			}
-		case "repo.gotemplate":
-			for _, ee := range data.RepoDataList {
-				tempText := temp.MustAssetString(name)
-				tmp := template.New(name).Funcs(maps)
-				parse, err := tmp.Parse(tempText)
-				if err != nil {
-					panic(fmt.Sprintf("template parse err: %s", err.Error()))
-				}
-				buffer := bytes.NewBuffer(nil)
-				err = parse.Execute(buffer, ee)
-				source, err := format.Source(buffer.Bytes())
-				split := strings.Split(name, ".")
-				err = writeFile(path.Join(basePath, schema.StrFirstLetterToLowercase(ee.EntityName)+"_"+split[0]+".go"), source)
-				if err != nil {
-					panic(fmt.Sprintf("write file err: %s", err.Error()))
-				}
-			}
-		case "example.gotemplate":
+		case "repository.gotemplate":
 			for _, ee := range data.RepoDataList {
 				tempText := temp.MustAssetString(name)
 				tmp := template.New(name).Funcs(maps)

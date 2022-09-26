@@ -38,7 +38,7 @@ func main() {
 	schema.Init(*userName, *password, *ip, *port, *db)
 	// schema.Init("root", "iSm!23465", "mysql", 3306, "chengdu")
 	tables, err := schema.Load(*db, *table)
-	// tables, err := schema.Load("chengdu", "act_evt_log,act_ge_bytearray,act_ge_property,act_hi_actinst,act_hi_attachment,act_hi_comment,act_hi_detail,act_hi_identitylink,act_hi_procinst,act_hi_taskinst,act_hi_varinst,act_id_group,act_id_info,act_id_membership,act_id_user,act_procdef_info")
+	// tables, err := schema.Load("chengdu", "")
 	if err != nil {
 		panic(err)
 	}
