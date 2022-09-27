@@ -36,9 +36,7 @@ func main() {
 	}
 
 	schema.Init(*userName, *password, *ip, *port, *db)
-	// schema.Init("root", "iSm!23465", "mysql", 3306, "chengdu")
 	tables, err := schema.Load(*db, *table)
-	// tables, err := schema.Load("demo", "")
 	if err != nil {
 		panic(err)
 	}
